@@ -1,2 +1,9 @@
 # Project exclude paths
 /proto-back/target/
+
+node_modules/
+
+.idea/
+*.iml
+
+.DS_store
