@@ -4,10 +4,10 @@ import '../styles/App.css';
 
 export default function App() {
   return (
-    <div className="App">
+      <div className="App">
+          <h1>Hello World</h1>
+          <img src={logo} alt="logo"/>
 
-        <img src={logo} alt="logo" />
-
-    </div>
+      </div>
   );
 }
