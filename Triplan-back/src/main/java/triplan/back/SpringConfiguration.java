@@ -1,4 +1,4 @@
-package esiag.back;
+package triplan.back;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

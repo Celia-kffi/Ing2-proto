@@ -1,5 +1,5 @@
 # Project exclude paths
-/proto-back/target/
+/Triplan-back/target/
 
 node_modules/
 
