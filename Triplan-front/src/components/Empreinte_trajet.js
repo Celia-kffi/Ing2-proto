@@ -1,15 +1,10 @@
 import { useState } from "react";
 import "../styles/Empreinte_trajet.css";
+import { MODES } from "../constants/transports";
+import { INFRASTRUCTURES } from "../constants/infrastructures";
+import { REMPLISSAGES } from "../constants/remplissages";
 
-const MODES = [
-    { name: "Marche", img: "/assets/marche.png" },
-    { name: "Vélo", img: "/assets/velo.png" },
-    { name: "Métro", img: "/assets/metro.png" },
-    { name: "Voiture essence", img: "../assets/voiture.png" },
-    { name: "Voiture électrique", img: "/assets/voiture_elec.png" },
-    { name: "Bus urbain", img: "/assets/bus.png" },
-    { name: "Avion court courrier", img: "/assets/avion.png" },
-];
+
 
 export default function Empreinte_trajet() {
     const [distance, setDistance] = useState(10);
@@ -86,13 +81,11 @@ export default function Empreinte_trajet() {
                     value={infrastructure}
                     onChange={(e) => setInfrastructure(e.target.value)}
                 >
-                    <option value="autoroute">Autoroute</option>
-                    <option value="urbain">Urbain</option>
-                    <option value="site_propre">Site propre</option>
-                    <option value="ligne_classique">Ligne classique</option>
-                    <option value="ligne_saturee">Ligne saturée</option>
-                    <option value="aerien">Aérien</option>
-                    <option value="souterrain">Souterrain</option>
+                    {INFRASTRUCTURES.map((item) => (
+                        <option key={item.value} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
                 </select>
 
                 <p className="subtitle">Niveau de remplissage</p>
@@ -102,9 +95,11 @@ export default function Empreinte_trajet() {
                     value={remplissage}
                     onChange={(e) => setRemplissage(e.target.value)}
                 >
-                    <option value="faible">Faible</option>
-                    <option value="moyen">Moyen</option>
-                    <option value="plein">Plein</option>
+                    {REMPLISSAGES.map((item) => (
+                        <option key={item.value} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
                 </select>
 
                 <button
