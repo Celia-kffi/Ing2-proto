@@ -20,4 +20,8 @@ public class ProfilThemeScoreService {
     public List<ProfilThemeScore> getProfilThemeScores() {
         return profilThemeScoreRepository.findAll();
     }
+
+    public List<ProfilThemeScore> getByProfilId(Long profilId) {
+        return profilThemeScoreRepository.findByProfilId(profilId);
+    }
 }

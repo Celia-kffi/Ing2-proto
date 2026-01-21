@@ -1,30 +1,54 @@
 package triplan.back.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import triplan.back.entities.Profil;
+import triplan.back.entities.ProfilThemeScore;
 import triplan.back.entities.Voyage;
+import triplan.back.services.ProfilService;
+import triplan.back.services.ProfilThemeScoreService;
 import triplan.back.services.RecommendationService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/recommendation")
+@RequestMapping("/api/recommendations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
+    private final ProfilService profilService;
+    private final ProfilThemeScoreService profilThemeScoreService;
 
-    @Autowired
-    public RecommendationController(RecommendationService recommendationService) {
+    public RecommendationController(
+            RecommendationService recommendationService,
+            ProfilService profilService,
+            ProfilThemeScoreService profilThemeScoreService
+    ) {
         this.recommendationService = recommendationService;
+        this.profilService = profilService;
+        this.profilThemeScoreService = profilThemeScoreService;
     }
 
     @GetMapping
     public List<Voyage> getRecommendations(
-            @RequestParam(defaultValue = "3") int limit
+            @RequestParam Long profilId
     ) {
-        return recommendationService.recommend(limit);
+
+
+        Profil profil = profilService.getProfilById(profilId);
+        if (profil == null) {
+            return List.of();
+        }
+
+
+        List<ProfilThemeScore> themeScores =
+                profilThemeScoreService.getByProfilId(profilId);
+
+
+        return recommendationService.recommend(
+                profil,
+                themeScores,
+                "France" // valeur fixe (tous les voyages sont en France)
+        );
     }
 }
