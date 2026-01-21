@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.stereotype.Component;
 import triplan.back.dto.ActiviteEtape;
 import triplan.back.dto.ItineraryRequest;
 import triplan.back.dto.ItineraryResponse;
@@ -16,12 +17,8 @@ import triplan.back.entities.Activite;
 import triplan.back.repositories.ActiviteRepository;
 import triplan.back.services.ItineraryService;
 
-@SpringBootApplication
+@Component
 public class OptimalItinerary {
-
-    public static void main(String[] args) {
-        SpringApplication.run(OptimalItinerary.class, args);
-    }
 
     @Bean
     CommandLineRunner runConsoleApp(ActiviteRepository activiteRepository,
