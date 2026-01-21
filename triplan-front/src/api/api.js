@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "http://172.31.253.128:8080/api";
 
 // Récupérer tous les profils
 export async function getProfils() {

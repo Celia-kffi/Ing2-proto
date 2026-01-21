@@ -70,9 +70,6 @@ public class RecommendationService {
         }
 
 
-        /* ==============================
-           3. Méthode de Hamilton
-           ============================== */
 
         Map<String, Integer> quotas = new LinkedHashMap<>();
         Map<String, Double> restes = new LinkedHashMap<>();
@@ -114,13 +111,10 @@ public class RecommendationService {
         }
 
 
-
-
-
-// 1. Récupération de tous les voyages
+        //Récupération de tous les voyages
         List<Voyage> tousLesVoyages = voyageService.getVoyages();
 
-// 2. Regroupement des voyages par thème
+        //Regroupement des voyages par thème
         Map<String, List<Voyage>> parTheme = new LinkedHashMap<>();
 
         for (Voyage v : tousLesVoyages) {
@@ -138,7 +132,7 @@ public class RecommendationService {
             parTheme.get(theme).add(v);
         }
 
-// 3. Sélection des voyages selon les quotas
+        //Sélection des voyages selon les quotas
         List<Voyage> resultat = new ArrayList<>();
         int manque = 0;
 
@@ -161,9 +155,6 @@ public class RecommendationService {
         }
 
 
-        /* ==============================
-           5. Redistribution si manque
-           ============================== */
 //        Map<String, Double> restesTemp = new LinkedHashMap<>(restes);
 //
 //
@@ -198,9 +189,6 @@ public class RecommendationService {
 //            }
 //        }
 
-        /* ==============================
-           6. Sécurité finale
-           ============================== */
 
         // Si aucun résultat (cas extrême), on renvoie des voyages par défaut
         if (resultat.isEmpty()) {
