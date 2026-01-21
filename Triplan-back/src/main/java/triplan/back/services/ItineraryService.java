@@ -7,10 +7,7 @@ import triplan.back.dto.ItineraryResponse;
 import triplan.back.entities.Activite;
 import triplan.back.repositories.ActiviteRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ItineraryService {
@@ -25,11 +22,25 @@ public class ItineraryService {
     public ItineraryResponse calculerItineraireOptimal(ItineraryRequest request) {
 
         // On récupère les activités sélectionnées
-        List<Activite> activites =
-                activiteRepository.findAllById(request.getActiviteIds());
+        List<Long> activiteIds = request.getActiviteIds();
+        List<Activite> activitesBDD =
+                activiteRepository.findAllById(activiteIds);
 
-        if (activites.isEmpty()) {
+        if (activitesBDD.isEmpty()) {
             throw new IllegalArgumentException("Aucune activité trouvée");
+        }
+
+        Map<Long, Activite> mapActivites = new HashMap<>();
+        for (Activite a : activitesBDD) {
+            mapActivites.put(a.getId(), a);
+        }
+
+        List<Activite> activites = new ArrayList<>();
+        for (Long id : activiteIds) {
+            Activite a = mapActivites.get(id);
+            if (a != null) {
+                activites.add(a);
+            }
         }
 
         Activite depart = determinerPointDepart(activites, request.getPointDepartId());
