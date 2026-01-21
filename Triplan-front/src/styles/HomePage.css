@@ -1,0 +1,129 @@
+.home-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a7fa1 0%, #125a73 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #ffffff;
+    padding-bottom: 40px;
+}
+
+
+.home-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 30px 10%;
+}
+
+.logo {
+    width: 45px;
+}
+
+.header-text h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.tagline {
+    font-size: 12px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.home-main {
+    max-width: 950px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.feature-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.feature-card h3 {
+    color: #0a3d4e;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: #546e7a;
+    font-size: 13.5px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.feature-button {
+    background: #1a7fa1;
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.feature-button:hover {
+    background: #125a73;
+}
+
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 12px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-card h4 {
+    color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.info-card p {
+    font-size: 12.5px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 768px) {
+    .features-grid, .info-section {
+        grid-template-columns: 1fr;
+    }
+}
