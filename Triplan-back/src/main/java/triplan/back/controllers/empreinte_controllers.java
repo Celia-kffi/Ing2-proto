@@ -61,13 +61,34 @@ public class empreinte_controllers {
         System.out.println("Coeff remplissage : " + coeffRemplissage);
         System.out.println("Empreinte final : " + empreinte);
 
+        //afin de comprarer avec un autre moyen de transport aléatoirement
+        MoyenTransport autreTransport = transportRepo.findAll().stream()
+                .filter(t -> !t.getNom().equals(transportN))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Aucun autre transport disponible"));
+
+        double facteurEmissionAutre = autreTransport.getFacteurEmission();
+        double coeffInfraAutre = infraRepo.findByTransportAndTypeInfrastructure(autreTransport, infrastructure)
+                .map(CoefficientInfrastructure::getCoefficient)
+                .orElse(1.0);
+        double coeffRemplissageAutre = remplissageRepo.findByTransportAndNiveauRemplissage(autreTransport, remplissage)
+                .map(CoefficientRemplissage::getCoefficient)
+                .orElse(1.0);
+
+        double empreinteAutre = distance * facteurEmissionAutre * coeffInfraAutre * coeffRemplissageAutre;
+
+        double difference = Math.abs(empreinte - empreinteAutre);
+
         return Map.of(
                 "transport", transportN,
                 "distance", distance,
                 "facteur", facteurEmission,
                 "coeffInfrastructure", coeffInfra,
                 "coeffRemplissage", coeffRemplissage,
-                "empreinte", empreinte
+                "empreinte", empreinte ,
+                "autreTransport", autreTransport.getNom(),
+                "empreinteAutre", empreinteAutre,
+                "difference", difference
         );
     }
 }

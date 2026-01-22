@@ -113,17 +113,17 @@ export default function Empreinte_trajet() {
                 {resultat && (
                     <div className="resultat-box">
                         <h3>Résultat</h3>
-                        <p>
-                            <strong>Transport :</strong>{" "}
-                            {resultat.transport.nom}
-                        </p>
-                        <p>
-                            <strong>Distance :</strong> {resultat.distance} km
-                        </p>
-                        <p>
-                            <strong>Empreinte carbone :</strong>{" "}
-                            {resultat.empreinte.toFixed(2)} kg CO₂
-                        </p>
+                        <p><strong>Transport :</strong> {resultat.transport}</p>
+                        <p><strong>Distance :</strong> {resultat.distance} km</p>
+                        <p><strong>Facteur émission :</strong> {resultat.facteur}</p>
+                        <p><strong>Coeff infrastructure :</strong> {resultat.coeffInfrastructure}</p>
+                        <p><strong>Coeff remplissage :</strong> {resultat.coeffRemplissage}</p>
+                        <p><strong>Empreinte carbone :</strong> {resultat.empreinte.toFixed(2)} kg CO₂</p>
+
+                        <h3>Comparaison avec un autre transport</h3>
+                        <p><strong>Autre transport :</strong> {resultat.autreTransport}</p>
+                        <p><strong>Empreinte autre :</strong> {resultat.empreinteAutre.toFixed(2)} kg CO₂</p>
+                        <p><strong>Différence :</strong> {resultat.difference.toFixed(2)} kg CO₂</p>
                     </div>
                 )}
             </div>
