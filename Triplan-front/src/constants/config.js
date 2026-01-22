@@ -1,5 +1,5 @@
 // URL de l'API backend
-export const API_BASE_URL = 'http://172.31.253.128:8080/api/itinerary';
+export const API_BASE_URL = 'http://172.31.253.128:8081/api/itinerary';
 
 export const MESSAGES = {
     ERROR_LOADING: 'Erreur lors du chargement des activités. Vérifiez que le backend est lancé.',

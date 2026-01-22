@@ -3,6 +3,8 @@ import { getProfils, getRecommendations } from "../api/api";
 import logo from "../assets/Triplan.png";
 import "../styles/Recommendation.css";
 import ProfilList from "../components/ProfilList";
+import { Link } from "react-router-dom";
+
 
 function Recommendation() {
     const [profils, setProfils] = useState([]);
@@ -44,10 +46,13 @@ function Recommendation() {
                     <p>Basées sur votre profil</p>
                 </div>
 
-                <div className="card disabled">
-                    <h3>Planification d’Activités</h3>
-                    <p>Bientôt disponible</p>
-                </div>
+                <Link to="/itinerary" className="card-link">
+                    <div className="card">
+                        <h3>Planification d’Activités</h3>
+                        <p>Accéder aux activités</p>
+                    </div>
+                </Link>
+
 
                 <div className="card disabled">
                     <h3>Empreinte Carbone</h3>
