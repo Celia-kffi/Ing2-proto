@@ -1,23 +1,39 @@
-Triplan est une plateforme de voyage permettant de planifier un séjour, choisir des destinations, organiser ses activités
-et estimer l’empreinte carbone afin de voyager de manière plus responsable.
+TRIPLAN
+Description
 
-Architecture et technologies
+TRIPLAN est une application web de planification et de recommandation de voyages intelligents et responsables.
+Elle permet aux utilisateurs de construire un voyage personnalisé en combinant :
 
-Backend :
+des recommandations adaptées à leur profil,
 
-Spring Boot (API REST)
+la planification d’activités et d’itinéraires,
 
-Frontend :
+l’estimation du budget global,
 
-React.js
+le calcul de l’empreinte carbone du voyage.
+
+Application déployée à l’adresse suivante :
+http://172.31.253.128/
+
+Fonctionnalités
 
 
-Équipe projet
 
-Ce projet est réalisé par :
+Frontend : React
 
-EL KENZ Roumayssae
+Backend : Java Spring Boot
 
-IDRISSI Khadija
+Base de données : PostgreSQL
 
-KOUFFI Celia
+
+Équipe
+
+Celia KOUFFI – Recommandation et analyse du profil utilisateur
+
+Roumayssae EL KENZ – Planification, itinéraires et coûts
+
+Khadija IDRISSI – Calcul de l’empreinte carbone
+
+Licence
+
+Projet académique – usage pédagogique.
