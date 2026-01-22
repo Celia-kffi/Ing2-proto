@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import OptimalItinerary from './components/OptimalItinerary';
 import Recommendations from './components/Recommendation';
-import Empreinte_trajet from "./components/Empreinte_trajet";
+import Empreintetrajet from "./components/Empreintetrajet";
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/itinerary" element={<OptimalItinerary />} />
                 <Route path="/recommendations" element={<Recommendations />} />
-                <Route path="/carbon" element={<Empreinte_trajet />} />
+                <Route path="/carbon" element={<Empreintetrajet />} />
             </Routes>
         </Router>
     );

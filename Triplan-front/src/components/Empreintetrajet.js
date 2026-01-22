@@ -6,7 +6,7 @@ import { REMPLISSAGES } from "../constants/remplissages";
 
 
 
-export default function Empreinte_trajet() {
+export default function Empreintetrajet() {
     const [distance, setDistance] = useState(10);
     const [selected, setSelected] = useState(null);
     const [infrastructure, setInfrastructure] = useState("autoroute");
