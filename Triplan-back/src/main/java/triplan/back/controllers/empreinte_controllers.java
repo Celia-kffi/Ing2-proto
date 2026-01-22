@@ -7,6 +7,8 @@ import triplan.back.entities.MoyenTransport;
 import triplan.back.repositories.CoefficientInfrastructureRepository;
 import triplan.back.repositories.CoefficientRemplissageRepository;
 import triplan.back.repositories.MoyenTransportRepository;
+import triplan.back.entities.EmpreinteCarbone;
+import triplan.back.repositories.EmpreinteCarboneRepository;
 
 import java.util.Map;
 
@@ -18,16 +20,21 @@ public class empreinte_controllers {
     private final MoyenTransportRepository transportRepo;
     private final CoefficientInfrastructureRepository infraRepo;
     private final CoefficientRemplissageRepository remplissageRepo;
+    private final EmpreinteCarboneRepository empreinteRepo;
 
     public empreinte_controllers(
             MoyenTransportRepository transportRepo,
             CoefficientInfrastructureRepository infraRepo,
-            CoefficientRemplissageRepository remplissageRepo
+            CoefficientRemplissageRepository remplissageRepo,
+            EmpreinteCarboneRepository empreinteRepo
     ) {
         this.transportRepo = transportRepo;
         this.infraRepo = infraRepo;
         this.remplissageRepo = remplissageRepo;
+        this.empreinteRepo = empreinteRepo;
     }
+
+
 
     @PostMapping("/calcul")
     public Map<String, Object> calcul(@RequestBody Map<String, Object> data) {
@@ -51,6 +58,8 @@ public class empreinte_controllers {
                 .findByTransportAndNiveauRemplissage(transport, remplissage)
                 .map(CoefficientRemplissage::getCoefficient)
                 .orElse(1.0);
+
+
 
         double empreinte = distance * facteurEmission * coeffInfra * coeffRemplissage;
         System.out.println("=== DETAIL DU CALCUL ===");
@@ -79,6 +88,13 @@ public class empreinte_controllers {
 
         double difference = Math.abs(empreinte - empreinteAutre);
 
+        //pour faire une sauvegarde sur la bdd
+        EmpreinteCarbone empreinteEntity = new EmpreinteCarbone();
+        empreinteEntity.setDistanceKm(distance);
+        empreinteEntity.setTransport(transport);
+        empreinteRepo.save(empreinteEntity);
+
+
         return Map.of(
                 "transport", transportN,
                 "distance", distance,
@@ -92,3 +108,4 @@ public class empreinte_controllers {
         );
     }
 }
+
