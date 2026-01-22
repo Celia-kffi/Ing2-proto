@@ -4,13 +4,12 @@ import logo from "../assets/Triplan.png";
 import "../styles/Recommendation.css";
 import ProfilList from "../components/ProfilList";
 
-
 function Recommendation() {
     const [profils, setProfils] = useState([]);
     const [voyages, setVoyages] = useState([]);
     const [profilChoisi, setProfilChoisi] = useState(null);
 
-    useEffect(() => {what
+    useEffect(() => {
         getProfils().then(setProfils);
     }, []);
 
@@ -44,10 +43,12 @@ function Recommendation() {
                     <h3>Recommandations de Voyages</h3>
                     <p>Basées sur votre profil</p>
                 </div>
+
                 <div className="card disabled">
                     <h3>Planification d’Activités</h3>
                     <p>Bientôt disponible</p>
                 </div>
+
                 <div className="card disabled">
                     <h3>Empreinte Carbone</h3>
                     <p>Bientôt disponible</p>
@@ -60,6 +61,7 @@ function Recommendation() {
                 <ProfilList
                     profils={profils}
                     onSelectProfil={handleProfilClick}
+                    selectedProfil={profilChoisi}
                 />
             </section>
 

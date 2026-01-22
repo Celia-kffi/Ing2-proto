@@ -1,15 +1,18 @@
-function ProfilList({ profils, onSelectProfil }) {
+import "../styles/ProfilList.css";
+
+function ProfilList({ profils, onSelectProfil, selectedProfil }) {
     return (
-        <div className="profil-buttons">
+        <div className="profil-list">
             {profils.map((profil) => (
                 <button
                     key={profil.id}
-                    className="profil-btn"
+                    className={
+                        "profil-card" +
+                        (selectedProfil === profil.id ? " selected" : "")
+                    }
                     onClick={() => onSelectProfil(profil.id)}
                 >
-                    {profil.prenom
-                        ? `${profil.prenom} ${profil.nom}`
-                        : profil.nom}
+                    <h3>{profil.nom}</h3>
                 </button>
             ))}
         </div>
