@@ -23,7 +23,7 @@ export default function Empreinte_trajet() {
 
             console.log("Données envoyées au backend :", payload);
 
-            const response = await fetch("http://localhost:8080/empreinte/calcul", {
+            const response = await fetch("http://172.31.253.128:8081/empreinte/calcul", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

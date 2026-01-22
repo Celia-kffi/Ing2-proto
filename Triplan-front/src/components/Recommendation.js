@@ -54,10 +54,13 @@ function Recommendation() {
                 </Link>
 
 
-                <div className="card disabled">
-                    <h3>Empreinte Carbone</h3>
-                    <p>Bientôt disponible</p>
-                </div>
+                <Link to="/carbon" className="card-link">
+                    <div className="card">
+                        <h3>Empreinte Carbone</h3>
+                        <p>Voir mon empreinte carbone</p>
+                    </div>
+                </Link>
+
             </section>
 
             {/* PROFILS */}
