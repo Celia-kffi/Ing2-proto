@@ -1,0 +1,192 @@
+/* GLOBAL */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* PAGE */
+.header,
+.hero,
+.section,
+.cards {
+    color: #ffffff;
+}
+
+.header {
+    background: linear-gradient(135deg, #1a7fa1 0%, #125a73 100%);
+    padding: 30px 10%;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-content img {
+    width: 45px;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.header-content p {
+    font-size: 12px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #1a7fa1 0%, #125a73 100%);
+}
+
+.hero h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 950px;
+    margin: 30px auto 40px;
+    padding: 0 20px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card h3 {
+    color: #0a3d4e;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #546e7a;
+    font-size: 13.5px;
+}
+
+.card.disabled {
+    opacity: 0.5;
+}
+
+/* SECTIONS */
+.section {
+    max-width: 950px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: #ffffff;
+}
+
+/* VOYAGES */
+.voyages {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.voyage-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.voyage-card h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    color: #0a3d4e;
+}
+
+.voyage-card .theme {
+    font-size: 12px;
+    color: #546e7a;
+}
+
+.voyage-card .prix {
+    font-weight: 700;
+    color: #1a7fa1;
+    font-size: 15px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.section {
+    max-width: 950px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    color: #0a3d4e; /* TEXTE FONCÉ */
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: #0a3d4e; /* PLUS BLANC */
+}
+
+.voyage-card.clickable {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.voyage-card.clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+

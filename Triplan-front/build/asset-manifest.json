@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b3ca2123.css",
+    "main.js": "/static/js/main.90943e4c.js",
+    "static/media/Triplan.png": "/static/media/Triplan.5b699add5c93403f01bb.png",
+    "index.html": "/index.html",
+    "main.b3ca2123.css.map": "/static/css/main.b3ca2123.css.map",
+    "main.90943e4c.js.map": "/static/js/main.90943e4c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b3ca2123.css",
+    "static/js/main.90943e4c.js"
+  ]
+}
