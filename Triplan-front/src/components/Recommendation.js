@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { getProfils, getRecommendations } from "../api/api";
-import ProfilList from "../components/ProfilList";
 import logo from "../assets/Triplan.png";
+import "../styles/Recommendation.css";
+import ProfilList from "../components/ProfilList";
 
-function HomePage() {
+
+function Recommendation() {
     const [profils, setProfils] = useState([]);
     const [voyages, setVoyages] = useState([]);
     const [profilChoisi, setProfilChoisi] = useState(null);
 
-    useEffect(() => {
+    useEffect(() => {what
         getProfils().then(setProfils);
     }, []);
 
@@ -83,4 +85,4 @@ function HomePage() {
     );
 }
 
-export default HomePage;
+export default Recommendation;

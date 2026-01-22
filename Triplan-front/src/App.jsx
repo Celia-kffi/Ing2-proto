@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import OptimalItinerary from './components/OptimalItinerary';
+import Recommendations from './components/Recommendation';
 
 
-const Recommendations = () => <div></div>;
 const Carbon = () => <div></div>;
 
 function App() {
