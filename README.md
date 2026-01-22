@@ -1,22 +1,6 @@
 TRIPLAN
 
 
-
-
-
-
-Sommaire
-
-Description
-
-Fonctionnalités
-
-Technologies
-
-Équipe
-
-Licence
-
 Description
 
 TRIPLAN est une application web de planification et de recommandation de voyages intelligents et responsables.
