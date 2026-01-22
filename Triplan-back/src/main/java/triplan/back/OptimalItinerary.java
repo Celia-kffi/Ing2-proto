@@ -24,6 +24,10 @@ public class OptimalItinerary {
     CommandLineRunner runConsoleApp(ActiviteRepository activiteRepository,
                                     ItineraryService itineraryService) {
         return args -> {
+            if (System.console() == null) {
+                System.out.println("Pas de terminal interactif: skipping le menu console");
+                return;
+            }
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
