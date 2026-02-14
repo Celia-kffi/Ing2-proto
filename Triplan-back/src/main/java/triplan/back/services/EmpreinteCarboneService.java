@@ -1,28 +1,26 @@
-package triplan.back.controllers;
+package triplan.back.services;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import triplan.back.entities.CoefficientInfrastructure;
 import triplan.back.entities.CoefficientRemplissage;
+import triplan.back.entities.EmpreinteCarbone;
 import triplan.back.entities.MoyenTransport;
 import triplan.back.repositories.CoefficientInfrastructureRepository;
 import triplan.back.repositories.CoefficientRemplissageRepository;
-import triplan.back.repositories.MoyenTransportRepository;
-import triplan.back.entities.EmpreinteCarbone;
 import triplan.back.repositories.EmpreinteCarboneRepository;
+import triplan.back.repositories.MoyenTransportRepository;
 
 import java.util.Map;
-
-@RestController
-@CrossOrigin(origins = "*")
-@RequestMapping("/empreinte")
-public class empreinte_controllers {
-
+@Service
+public class EmpreinteCarboneService {
     private final MoyenTransportRepository transportRepo;
     private final CoefficientInfrastructureRepository infraRepo;
     private final CoefficientRemplissageRepository remplissageRepo;
     private final EmpreinteCarboneRepository empreinteRepo;
 
-    public empreinte_controllers(
+    public EmpreinteCarboneService(
             MoyenTransportRepository transportRepo,
             CoefficientInfrastructureRepository infraRepo,
             CoefficientRemplissageRepository remplissageRepo,
@@ -35,9 +33,7 @@ public class empreinte_controllers {
     }
 
 
-
-    @PostMapping("/calcul")
-    public Map<String, Object> calcul(@RequestBody Map<String, Object> data) {
+    public Map<String, Object> calculEmpreinte(@RequestBody Map<String, Object> data) {
 
         String transportN = data.get("transport").toString();
         double distance = Double.parseDouble(data.get("distance").toString());
@@ -108,4 +104,3 @@ public class empreinte_controllers {
         );
     }
 }
-
