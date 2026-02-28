@@ -4,6 +4,7 @@ import HomePage from './components/HomePage';
 import OptimalItinerary from './components/OptimalItinerary';
 import Recommendations from './components/Recommendation';
 import Empreintetrajet from "./components/Empreintetrajet";
+import Clients from "./components/Clients";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
                 <Route path="/itinerary" element={<OptimalItinerary />} />
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/carbon" element={<Empreintetrajet />} />
+                <Route path="/clients" element={<Clients />} />
             </Routes>
         </Router>
     );

@@ -24,6 +24,12 @@ const HomePage = () => {
             title: 'Empreinte Carbone',
             available: true,
             route: '/carbon'
+        },
+        {
+            id: 'client',
+            title: 'client mock en masse',
+            available: true,
+            route: '/clients'
         }
     ];
 
