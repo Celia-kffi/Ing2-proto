@@ -18,10 +18,27 @@ const activitesApi = {
                 activiteIds: activiteIds,
                 pointDepartId: pointDepartId
             };
+            console.log("Body: ", requestBody);
             const response = await axios.post(`${API_BASE_URL}/calculate`, requestBody);
             return response.data;
         } catch (error) {
             console.error('Erreur lors du calcul de l\'itinéraire:', error);
+            throw error;
+        }
+    },
+
+    calculateMultiDayItinerary: async (activiteIds, pointDepartId = null, nbJours = 1, dureeMaxParJour = 480) => {
+        try {
+            const requestBody = {
+                activiteIds: activiteIds,
+                pointDepartId: pointDepartId,
+                nbJours: nbJours,
+                dureeMaxParJourMinutes: dureeMaxParJour
+            };
+            const response = await axios.post(`${API_BASE_URL}/calculate-multi-days`, requestBody);
+            return response.data;
+        } catch (error) {
+            console.error('Erreur lors du calcul de l\'itinéraire multi-jours:', error);
             throw error;
         }
     }
