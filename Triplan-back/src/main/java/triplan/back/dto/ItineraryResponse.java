@@ -14,5 +14,4 @@ public class ItineraryResponse {
     private List<ActiviteEtape> itineraire;
     private double distanceTotaleKm;
     private int dureeTotaleMinutes;
-    private String algorithmeUtilise;
 }

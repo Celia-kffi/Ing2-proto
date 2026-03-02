@@ -1,8 +1,11 @@
 package triplan.back.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import triplan.back.dto.ItineraryRequest;
 import triplan.back.dto.ItineraryResponse;
+import triplan.back.dto.MultiDayItineraryRequest;
+import triplan.back.dto.MultiDayItineraryResponse;
 import triplan.back.entities.Activite;
 import triplan.back.repositories.ActiviteRepository;
 import triplan.back.services.ItineraryService;
@@ -43,4 +46,18 @@ public class ItineraryController {
             @RequestBody ItineraryRequest request) {
         return itineraryService.calculerItineraireOptimal(request);
     }
+
+    @PostMapping("/calculate-multi-days")
+    public ResponseEntity<MultiDayItineraryResponse> calculateMultiDayItinerary(
+            @RequestBody MultiDayItineraryRequest request) {
+        try {
+            MultiDayItineraryResponse response = itineraryService.calculerItineraireMultiJours(request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }
