@@ -1,11 +1,11 @@
 package triplan.back.services;
 
 import org.springframework.stereotype.Service;
-import triplan.back.dto.ActiviteEtape;
-import triplan.back.dto.ItineraryRequest;
-import triplan.back.dto.ItineraryResponse;
+import triplan.back.dto.*;
 import triplan.back.entities.Activite;
 import triplan.back.repositories.ActiviteRepository;
+import triplan.back.dto.MultiDayItineraryResponse;
+
 
 import java.util.*;
 
@@ -165,8 +165,138 @@ public class ItineraryService {
         return new ItineraryResponse(
                 etapes,
                 Math.round(distanceTotale * 100.0) / 100.0,
-                dureeTotale,
-                "Nearest Neighbor"
+                dureeTotale
         );
+    }
+
+
+
+    public MultiDayItineraryResponse calculerItineraireMultiJours(MultiDayItineraryRequest request) {
+        List<Long> activiteIds = request.getActiviteIds();
+        List<Activite> activitesBDD = activiteRepository.findAllById(activiteIds);
+
+        if (activitesBDD.isEmpty()) {
+            throw new IllegalArgumentException("Aucune activité trouvée pour les IDs fournis");
+        }
+
+        Map<Long, Activite> mapActivites = new HashMap<>();
+        for (Activite a : activitesBDD) {
+            mapActivites.put(a.getId(), a);
+        }
+
+        List<Activite> activites = new ArrayList<>();
+        for (Long id : activiteIds) {
+            Activite a = mapActivites.get(id);
+            if (a != null) {
+                activites.add(a);
+            }
+        }
+
+        Activite depart = determinerPointDepart(activites, request.getPointDepartId());
+
+        List<Activite> itineraireOptimal = calculerItinerairePlusProche(activites, depart);
+
+        // On répartit les activités sur plusieurs jours en respectant la durée max par jour
+        List<JourItineraire> jours = repartirParJours(
+                itineraireOptimal,
+                request.getNbJours(),
+                request.getDureeMaxParJourMinutes()
+        );
+
+        // On calcul les totaux distance et durée pour tout le séjour
+        double distanceTotale = jours.stream()
+                .mapToDouble(JourItineraire::getDistanceTotaleKm)
+                .sum();
+
+        int dureeTotale = jours.stream()
+                .mapToInt(JourItineraire::getDureeTotaleMinutes)
+                .sum();
+
+        return new MultiDayItineraryResponse(
+                request.getNbJours(),
+                jours,
+                Math.round(distanceTotale * 100.0) / 100.0,
+                dureeTotale
+        );
+    }
+
+    private List<JourItineraire> repartirParJours(
+            List<Activite> itineraireOptimal,
+            int nbJours,
+            int dureeMaxParJour
+    ) {
+        List<JourItineraire> jours = new ArrayList<>();
+        List<ActiviteEtape> activitesJourActuel = new ArrayList<>();
+
+        int numeroJour = 1;
+        int dureeCumuleeJour = 0;
+        double distanceCumuleeJour = 0.0;
+        int ordreGlobal = 1;
+
+        for (int i = 0; i < itineraireOptimal.size(); i++) {
+            Activite activite = itineraireOptimal.get(i);
+
+
+            int dureeActivite = activite.getDureeVisiteMinutes();
+            int tempsTrajet = 0;
+            double distanceTrajet = 0.0;
+
+            if (!activitesJourActuel.isEmpty()) {
+                Activite precedente = itineraireOptimal.get(i - 1);
+                distanceTrajet = calculerDistance(precedente, activite);
+                tempsTrajet = (int) Math.ceil(distanceTrajet * 12);
+            }
+
+            int nouvelleDuree = dureeCumuleeJour + dureeActivite + tempsTrajet;
+
+            // On vérifie si la durée max par jour est dépassée et si on peut créer un nouveau jour
+            if (nouvelleDuree > dureeMaxParJour && numeroJour < nbJours && !activitesJourActuel.isEmpty()) {
+                // On garde le jour courant
+                jours.add(new JourItineraire(
+                        numeroJour,
+                        new ArrayList<>(activitesJourActuel),
+                        dureeCumuleeJour,
+                        Math.round(distanceCumuleeJour * 100.0) / 100.0
+                ));
+
+                // On passe au jour suivant
+                numeroJour++;
+                activitesJourActuel.clear();
+                dureeCumuleeJour = 0;
+                distanceCumuleeJour = 0.0;
+
+                tempsTrajet = 0;
+                distanceTrajet = 0.0;
+            }
+
+
+            ActiviteEtape etape = new ActiviteEtape(
+                    ordreGlobal++,
+                    activite.getId(),
+                    activite.getNom(),
+                    activite.getLatitude(),
+                    activite.getLongitude(),
+                    activite.getDureeVisiteMinutes(),
+                    distanceTrajet > 0 ? distanceTrajet : null,
+                    tempsTrajet > 0 ? tempsTrajet : null,
+                    activite.getTypeActivite()
+            );
+
+            activitesJourActuel.add(etape);
+            dureeCumuleeJour += dureeActivite + tempsTrajet;
+            distanceCumuleeJour += distanceTrajet;
+        }
+
+        // Ajout du dernier jour s'il reste des activités
+        if (!activitesJourActuel.isEmpty()) {
+            jours.add(new JourItineraire(
+                    numeroJour,
+                    activitesJourActuel,
+                    dureeCumuleeJour,
+                    Math.round(distanceCumuleeJour * 100.0) / 100.0
+            ));
+        }
+
+        return jours;
     }
 }
