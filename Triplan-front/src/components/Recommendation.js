@@ -1,96 +1,71 @@
 import { useEffect, useState } from "react";
-import { getProfils, getRecommendations } from "../api/api";
-import logo from "../assets/Triplan.png";
-import "../styles/Recommendation.css";
+import { getProfils } from "../api/api";
 import ProfilList from "../components/ProfilList";
+import ProfilForm from "../components/ProfilForm";
 import { Link } from "react-router-dom";
 
-
 function Recommendation() {
+
     const [profils, setProfils] = useState([]);
-    const [voyages, setVoyages] = useState([]);
     const [profilChoisi, setProfilChoisi] = useState(null);
 
     useEffect(() => {
-        getProfils().then(setProfils);
+        getProfils().then((data) => {
+            setProfils(data);
+        });
     }, []);
 
-    const handleProfilClick = (profilId) => {
-        setProfilChoisi(profilId);
-        getRecommendations(profilId).then(setVoyages);
-    };
+    function choisirProfil(id) {
+        setProfilChoisi(id);
+    }
+
+    function retour() {
+        setProfilChoisi(null);
+    }
 
     return (
-        <div>
-            {/* HEADER */}
-            <header className="header fade-in">
-                <div className="header-content">
-                    <img src={logo} alt="Triplan" />
-                    <div>
-                        <h1>TRIPLAN</h1>
-                        <p>Votre assistant de voyage intelligent et responsable</p>
-                    </div>
-                </div>
-            </header>
+        <div style={{ padding: "20px" }}>
 
-            {/* HERO */}
-            <section className="hero fade-in">
-                <h2>Bienvenue sur Triplan</h2>
-                <p>Planifiez votre voyage de manière optimale et écologique</p>
-            </section>
+            <h1>TRIPLAN</h1>
+            <p>Assistant de voyage</p>
 
-            {/* CARDS */}
-            <section className="cards fade-in">
-                <div className="card active">
-                    <h3>Recommandations de Voyages</h3>
-                    <p>Basées sur votre profil</p>
-                </div>
+            <hr />
 
-                <Link to="/itinerary" className="card-link">
-                    <div className="card">
-                        <h3>Planification d’Activités</h3>
-                        <p>Accéder aux activités</p>
-                    </div>
+            <h2>Menu</h2>
+
+            <div>
+                <p><b>Recommandations</b></p>
+
+                <Link to="/itinerary">
+                    <button>Planification</button>
                 </Link>
 
-
-                <Link to="/carbon" className="card-link">
-                    <div className="card">
-                        <h3>Empreinte Carbone</h3>
-                        <p>Voir mon empreinte carbone</p>
-                    </div>
+                <Link to="/carbon">
+                    <button style={{ marginLeft: "10px" }}>
+                        Empreinte carbone
+                    </button>
                 </Link>
+            </div>
 
-            </section>
+            <hr />
 
-            {/* PROFILS */}
-            <section className="section fade-in">
-                <h2>Choisissez un profil</h2>
-                <ProfilList
-                    profils={profils}
-                    onSelectProfil={handleProfilClick}
-                    selectedProfil={profilChoisi}
+            {profilChoisi === null ? (
+                <div>
+                    <h2>Choisissez un profil</h2>
+
+                    <ProfilList
+                        profils={profils}
+                        onSelectProfil={choisirProfil}
+                        selectedProfil={profilChoisi}
+                    />
+                </div>
+            ) : (
+                <ProfilForm
+                    profilId={profilChoisi}
+                    onClose={retour}
                 />
-            </section>
-
-            {/* RECOMMANDATIONS */}
-            {profilChoisi && (
-                <section className="section fade-in">
-                    <h2>Recommandations de voyages</h2>
-
-                    <div className="voyages">
-                        {voyages.map((v) => (
-                            <div key={v.id} className="voyage-card">
-                                <div>
-                                    <h3>{v.nom}</h3>
-                                    <span className="theme">{v.theme}</span>
-                                </div>
-                                <div className="prix">{v.prix} €</div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
             )}
+
         </div>
     );
 }
