@@ -94,6 +94,8 @@ function OptimalItinerary() {
         setError(null);
     };
 
+    const distanceTotale = itineraryData?.distanceTotaleKm || multiDayData?.distanceTotaleKm;
+
     return (
         <div className="optimal-itinerary">
             <button className="back-button" onClick={() => navigate('/')}>Retour</button>
@@ -173,7 +175,8 @@ function OptimalItinerary() {
                         </button>
                         <button
                             className="btn-carbone"
-                            onClick={() => navigate('/carbon')}
+                            onClick={() => navigate('/carbon?distance=${distanceTotale}')}
+                            disabled={!distanceTotale}
                         >
                              Calculer l'empreinte carbone
                         </button>
