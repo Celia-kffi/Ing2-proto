@@ -28,9 +28,7 @@ function OptimalItinerary() {
     const loadVilleEtActivites = async () => {
         try {
             setLoading(true);
-            const ville = await activitesApi.getDerniereVilleRecommandee(1);
-            setVilleRecommandee(ville);
-            const data = await activitesApi.getActivitesByVille(ville);
+            const data = await activitesApi.getAllActivites();
             setActivites(data);
             setError(null);
         } catch (err) {
@@ -64,22 +62,8 @@ function OptimalItinerary() {
             setLoading(true);
             setError(null);
             const pointDepart = selectedPointDepart || selectedActivites[0];
-
-            if (isMultiDay) {
-
-                const data = await activitesApi.calculateMultiDayItinerary(
-                    selectedActivites,
-                    pointDepart,
-                    nbJours
-                );
-                setMultiDayData(data);
-                setItineraryData(null);
-            } else {
-
-                const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
-                setItineraryData(data);
-                setMultiDayData(null);
-            }
+            const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
+            setItineraryData(data);
         } catch (err) {
             setError(MESSAGES.ERROR_CALCULATING);
             console.error(err);

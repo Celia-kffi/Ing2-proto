@@ -25,6 +25,7 @@ public class Voyage {
     private Integer budgetMoyen;
     private String destination;
     private String themePrincipal;
+    private String categorie;
 
     public Voyage() {
     }
@@ -36,7 +37,8 @@ public class Voyage {
                   Integer prix,
                   Integer budgetMoyen,
                   String destination,
-                  String themePrincipal) {
+                  String themePrincipal,
+                  String categorie) {
         this.id = id;
         this.nom = nom;
         this.theme = theme;
@@ -45,6 +47,7 @@ public class Voyage {
         this.budgetMoyen = budgetMoyen;
         this.destination = destination;
         this.themePrincipal = themePrincipal;
+        this.categorie = categorie;
     }
 
     public Voyage(String nom,
@@ -53,7 +56,8 @@ public class Voyage {
                   Integer prix,
                   Integer budgetMoyen,
                   String destination,
-                  String themePrincipal) {
+                  String themePrincipal,
+                  String categorie) {
         this.nom = nom;
         this.theme = theme;
         this.pays = pays;
@@ -61,6 +65,7 @@ public class Voyage {
         this.budgetMoyen = budgetMoyen;
         this.destination = destination;
         this.themePrincipal = themePrincipal;
+        this.categorie = categorie;
     }
 
     public Long getId() {
@@ -127,6 +132,14 @@ public class Voyage {
         this.themePrincipal = themePrincipal;
     }
 
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
     @Override
     public String toString() {
         return "Voyage{" +
@@ -138,6 +151,7 @@ public class Voyage {
                 ", budgetMoyen=" + budgetMoyen +
                 ", destination='" + destination + '\'' +
                 ", themePrincipal='" + themePrincipal + '\'' +
+                ", categorie='" + categorie + '\'' +
                 '}';
     }
 }
