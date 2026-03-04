@@ -1,0 +1,167 @@
+.multiday-result {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.multiday-result h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.summary-box {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary-item .label {
+    font-size: 13px;
+    color: #666;
+}
+
+.summary-item .value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1976d2;
+}
+
+.days-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.day-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.day-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.day-header {
+    padding: 15px;
+    background: #f9f9f9;
+    border-left: 4px solid #1976d2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.day-badge {
+    background: #1976d2;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.day-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.separator {
+    color: #ccc;
+}
+
+.activities-list {
+    padding: 15px;
+}
+
+.activity-item {
+    display: flex;
+    gap: 15px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background: #fafafa;
+    transition: background 0.2s;
+}
+
+.activity-item:hover {
+    background: #f0f0f0;
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-number {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #1976d2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-details h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.activity-details p {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.travel-info {
+    color: #999;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .summary-box {
+        flex-direction: column;
+    }
+
+    .day-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

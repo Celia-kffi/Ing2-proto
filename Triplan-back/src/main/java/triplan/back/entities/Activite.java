@@ -35,4 +35,7 @@ public class Activite {
     @Column(name = "type_activite", length = 100)
     private String typeActivite;
 
+    @Column(nullable = false, length = 100)
+    private String ville;
+
 }

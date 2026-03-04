@@ -1,0 +1,128 @@
+.map-view {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-view h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.map-container {
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.map-placeholder {
+    background: white;
+    border-radius: 8px;
+    padding: 60px 20px;
+    text-align: center;
+    color: #999;
+    border: 2px dashed #ddd;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-placeholder p {
+    font-size: 16px;
+}
+
+
+.numbered-marker {
+    background: #166b88;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.custom-marker-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+
+.popup-content {
+    text-align: left;
+}
+
+.popup-content h4 {
+    margin: 5px 0;
+    color: #166b88;
+    font-size: 16px;
+}
+
+.popup-content p {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.popup-content strong {
+    color: #333;
+}
+
+
+.map-legend {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.map-legend p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.map-legend strong {
+    color: #166b88;
+    font-size: 16px;
+}
+
+.map-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e3f2fd;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.map-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #166b88;
+    font-style: italic;
+}
+
+
+@media (max-width: 768px) {
+    .map-container {
+        height: 400px;
+    }
+
+    .map-legend {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

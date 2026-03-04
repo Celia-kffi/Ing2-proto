@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ActiviteRepository extends JpaRepository<Activite, Long> {
-
     List<Activite> findByTypeActivite(String typeActivite);
+    List<Activite> findByVille(String ville);
 }
 
