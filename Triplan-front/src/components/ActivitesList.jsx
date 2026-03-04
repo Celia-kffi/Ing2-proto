@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ActivitesList.css';
 
-const ActivitesList = ({ activites, selectedActivites, onToggleActivite }) => {
+const ActivitesList = ({ activites, selectedActivites, onToggleActivite, onSupprimerActivite}) => {
     return (
         <div className="activites-list">
             <h2>Activités disponibles</h2>
@@ -20,7 +20,8 @@ const ActivitesList = ({ activites, selectedActivites, onToggleActivite }) => {
                             <input
                                 type="checkbox"
                                 checked={isSelected}
-                                onChange={() => {}}
+                                onChange={() => {
+                                }}
                                 className="activite-checkbox"
                             />
                             <div className="activite-info">
@@ -31,6 +32,13 @@ const ActivitesList = ({ activites, selectedActivites, onToggleActivite }) => {
                                     <span>{activite.typeActivite}</span>
                                 </div>
                             </div>
+                            <button
+                                className="btn-supprimer"
+                                onClick={() => onSupprimerActivite(activite.id)}
+                                title="Retirer cette activité"
+                            >
+                                ✕
+                            </button>
                         </div>
                     );
                 })}
