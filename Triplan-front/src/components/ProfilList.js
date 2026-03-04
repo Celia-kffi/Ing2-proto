@@ -13,6 +13,11 @@ function ProfilList({ profils, onSelectProfil, selectedProfil }) {
                     onClick={() => onSelectProfil(profil.id)}
                 >
                     <h3>{profil.nom}</h3>
+
+                    <h3>{profil.adresseMail}</h3>
+
+
+
                 </button>
             ))}
         </div>
