@@ -30,6 +30,12 @@ const HomePage = () => {
             title: 'client mock en masse',
             available: true,
             route: '/clients'
+        },
+        {
+            id: 'Hebergement',
+            title: 'carbone hebergement',
+            available: true,
+            route: '/hebergement'
         }
     ];
 
