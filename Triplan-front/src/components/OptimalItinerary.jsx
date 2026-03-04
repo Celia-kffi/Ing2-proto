@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/OptimalItinerary.css';
-import api from '../services/api';
+import activitesApi from '../api/activitesApi';
 import ActivitesList from './ActivitesList';
 import ItineraryResult from './ItineraryResult';
+import MultiDayItineraryResult from './MultiDayItineraryResult';
+import MapView from "./MapView";
 import { MESSAGES } from '../constants/config';
 
 function OptimalItinerary() {
@@ -12,8 +14,11 @@ function OptimalItinerary() {
     const [selectedActivites, setSelectedActivites] = useState([]);
     const [selectedPointDepart, setSelectedPointDepart] = useState(null);
     const [itineraryData, setItineraryData] = useState(null);
+    const [multiDayData, setMultiDayData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isMultiDay, setIsMultiDay] = useState(false);
+    const [nbJours, setNbJours] = useState(2);
 
     useEffect(() => {
         loadActivites();
@@ -22,7 +27,7 @@ function OptimalItinerary() {
     const loadActivites = async () => {
         try {
             setLoading(true);
-            const data = await api.getAllActivites();
+            const data = await activitesApi.getAllActivites();
             setActivites(data);
             setError(null);
         } catch (err) {
@@ -41,6 +46,13 @@ function OptimalItinerary() {
         }
     };
 
+    const handleSupprimerActivite = (id) => {
+        setActivites(prev => prev.filter(a => a.id !== id));
+        setSelectedActivites(prev => prev.filter(actId => actId !== id));
+        setItineraryData(null);
+        setMultiDayData(null);
+    };
+
     const handleCalculateItinerary = async () => {
         if (selectedActivites.length < 2) {
             alert(MESSAGES.MIN_ACTIVITIES);
@@ -50,8 +62,22 @@ function OptimalItinerary() {
             setLoading(true);
             setError(null);
             const pointDepart = selectedPointDepart || selectedActivites[0];
-            const data = await api.calculateItinerary(selectedActivites, pointDepart);
-            setItineraryData(data);
+
+            if (isMultiDay) {
+
+                const data = await activitesApi.calculateMultiDayItinerary(
+                    selectedActivites,
+                    pointDepart,
+                    nbJours
+                );
+                setMultiDayData(data);
+                setItineraryData(null);
+            } else {
+
+                const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
+                setItineraryData(data);
+                setMultiDayData(null);
+            }
         } catch (err) {
             setError(MESSAGES.ERROR_CALCULATING);
             console.error(err);
@@ -64,18 +90,13 @@ function OptimalItinerary() {
         setSelectedActivites([]);
         setSelectedPointDepart(null);
         setItineraryData(null);
+        setMultiDayData(null);
         setError(null);
     };
 
     return (
         <div className="optimal-itinerary">
-            <button
-                className="back-button"
-                onClick={() => navigate('/')}
-            >
-                Retour
-            </button>
-
+            <button className="back-button" onClick={() => navigate('/')}>Retour</button>
             <header className="header">
                 <h1>Planifiez vos Activites</h1>
                 <p>Organisez votre itineraire de maniere optimale</p>
@@ -83,48 +104,94 @@ function OptimalItinerary() {
 
             {error && <div className="error-banner">{error}</div>}
 
-            <ActivitesList
-                activites={activites}
-                selectedActivites={selectedActivites}
-                onToggleActivite={handleToggleActivite}
-            />
+            <div className="top-container">
+                <div className="left-panel">
+                    <ActivitesList
+                        activites={activites}
+                        selectedActivites={selectedActivites}
+                        onToggleActivite={handleToggleActivite}
+                        onSupprimerActivite={handleSupprimerActivite}
+                    />
 
-            <div className="start-point-selector">
-                <label htmlFor="point-depart">Point de depart :</label>
-                <select
-                    id="point-depart"
-                    value={selectedPointDepart || ""}
-                    onChange={(e) => setSelectedPointDepart(e.target.value ? parseInt(e.target.value) : null)}
-                >
-                    <option value="">Par defaut (premiere activite)</option>
-                    {activites
-                        .filter((act) => selectedActivites.includes(act.id))
-                        .map((activite) => (
-                            <option key={activite.id} value={activite.id}>
-                                {activite.nom}
-                            </option>
-                        ))}
-                </select>
+                    <div className="start-point-selector">
+                        <label htmlFor="point-depart">Point de depart :</label>
+                        <select
+                            id="point-depart"
+                            value={selectedPointDepart || ""}
+                            onChange={(e) => setSelectedPointDepart(e.target.value ? parseInt(e.target.value) : null)}
+                        >
+                            <option value="">Par defaut (premiere activite)</option>
+                            {activites
+                                .filter((act) => selectedActivites.includes(act.id))
+                                .map((activite) => (
+                                    <option key={activite.id} value={activite.id}>
+                                        {activite.nom}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
+
+                    <div className="multi-day-section">
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={isMultiDay}
+                                onChange={(e) => setIsMultiDay(e.target.checked)}
+                            />
+                            Planning sur plusieurs jours
+                        </label>
+
+                        {isMultiDay && (
+                            <div className="nb-jours-input">
+                                <label htmlFor="nb-jours">Duree du sejour (jours) :</label>
+                                <input
+                                    type="number"
+                                    id="nb-jours"
+                                    min="1"
+                                    max="7"
+                                    value={nbJours}
+                                    onChange={(e) => setNbJours(parseInt(e.target.value) || 1)}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="action-buttons">
+                        <button
+                            className="btn-primary"
+                            onClick={handleCalculateItinerary}
+                            disabled={loading || selectedActivites.length < 2}
+                        >
+                            {loading ? 'Calcul en cours...' : 'Calculer l\'itineraire'}
+                        </button>
+                        <button
+                            className="btn-secondary"
+                            onClick={handleReset}
+                            disabled={loading}
+                        >
+                            Reinitialiser
+                        </button>
+                    </div>
+                </div>
+
+                <div className="right-panel">
+                    <MapView
+                        itineraryData={itineraryData}
+                        multiDayData={multiDayData}
+                    />
+                </div>
             </div>
 
-            <div className="action-buttons">
-                <button
-                    className="btn-primary"
-                    onClick={handleCalculateItinerary}
-                    disabled={loading || selectedActivites.length < 2}
-                >
-                    {loading ? 'Calcul en cours...' : 'Calculer l\'itineraire'}
-                </button>
-                <button
-                    className="btn-secondary"
-                    onClick={handleReset}
-                    disabled={loading}
-                >
-                    Reinitialiser
-                </button>
-            </div>
 
-            <ItineraryResult itineraryData={itineraryData}/>
+            {(itineraryData || multiDayData) && (
+                <div className="bottom-container">
+                    {isMultiDay && multiDayData ? (
+                        <MultiDayItineraryResult multiDayData={multiDayData}/>
+                    ) : (
+                        <ItineraryResult itineraryData={itineraryData}/>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
