@@ -171,6 +171,12 @@ function OptimalItinerary() {
                         >
                             Reinitialiser
                         </button>
+                        <button
+                            className="btn-carbone"
+                            onClick={() => navigate('/carbon')}
+                        >
+                             Calculer l'empreinte carbone
+                        </button>
                     </div>
                 </div>
 
