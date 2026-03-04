@@ -1,9 +1,9 @@
 package triplan.back.services;
 
 import org.springframework.stereotype.Service;
-import triplan.back.entities.Profil;
-import triplan.back.entities.ProfilThemeScore;
+import triplan.back.dto.ProfilForm;
 import triplan.back.entities.Voyage;
+import triplan.back.repositories.VoyageRepository;
 
 import java.util.*;
 
@@ -12,183 +12,123 @@ public class RecommendationService {
 
     private static final int TOTAL_RECO = 6;
 
-    private final VoyageService voyageService;
+    private final VoyageRepository voyageRepository;
 
-    public RecommendationService(VoyageService voyageService) {
-        this.voyageService = voyageService;
+    public RecommendationService(VoyageRepository voyageRepository) {
+        this.voyageRepository = voyageRepository;
     }
 
-    public List<Voyage> recommend(
-            Profil profil,
-            List<ProfilThemeScore> themeScores,
-            String pays
-    ) {
+    public List<Voyage> recommander(ProfilForm profil) {
 
-        System.out.println("\n==============================");
-        System.out.println("DEBUT RECOMMANDATION");
-        System.out.println("Profil : " + profil.getNom());
-        System.out.println("Pays : " + pays);
-        System.out.println("==============================\n");
+        List<Voyage> voyages = voyageRepository.findAll();
+        String themeDominant = determinerTheme(profil);
 
-        // regarder si la table des themes est null ou pas
-        //elle marche (la liste n'est pas vide)
-        if (themeScores == null || themeScores.isEmpty()) {
-            System.out.println("Aucun theme score");
-            return List.of();
+        voyages.sort((v1, v2) ->
+                Integer.compare(
+                        calculerScore(v2, profil, themeDominant),
+                        calculerScore(v1, profil, themeDominant)
+                )
+        );
+
+        return voyages.stream()
+                .limit(TOTAL_RECO)
+                .toList();
+    }
+
+    private String determinerTheme(ProfilForm p) {
+
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("luxe", 0);
+        scores.put("aventure", 0);
+        scores.put("culture", 0);
+        scores.put("detente", 0);
+        scores.put("nature", 0);
+
+        if ("Montagne".equals(p.getEnvironnement())) {
+            scores.merge("aventure", 2, Integer::sum);
+            scores.merge("nature", 2, Integer::sum);
+        } else if ("Mer".equals(p.getEnvironnement())) {
+            scores.merge("detente", 2, Integer::sum);
+            scores.merge("luxe", 1, Integer::sum);
+        } else if ("Ville".equals(p.getEnvironnement())) {
+            scores.merge("culture", 2, Integer::sum);
+            scores.merge("luxe", 1, Integer::sum);
         }
 
-        // Map <theme, pourcentage> : structure la plus adapté a mon cas
-        //elle assosie chaque theme unique a une valeur
-        //on recupère de la table profil_theme_score et on stocke dans cette structure
-        Map<String, Integer> preferences = new LinkedHashMap<>();
+        if ("Sports".equals(p.getActivite())) {
+            scores.merge("aventure", 3, Integer::sum);
+        } else if ("Musées".equals(p.getActivite())) {
+            scores.merge("culture", 3, Integer::sum);
+        } else if ("Spa".equals(p.getActivite())) {
+            scores.merge("detente", 2, Integer::sum);
+            scores.merge("luxe", 1, Integer::sum);
+        }
 
-        for (ProfilThemeScore pts : themeScores) {
-            if (pts.getTheme() != null) {
-                String theme = pts.getTheme().toLowerCase();
-                Integer pourcentage = pts.getPourcentage();
-                preferences.put(theme, pourcentage);
+        if ("Gros".equals(p.getBudget())) {
+            scores.merge("luxe", 3, Integer::sum);
+        } else if ("Moyen".equals(p.getBudget())) {
+            scores.merge("culture", 1, Integer::sum);
+            scores.merge("detente", 1, Integer::sum);
+        } else if ("Petit".equals(p.getBudget())) {
+            scores.merge("nature", 2, Integer::sum);
+            scores.merge("aventure", 1, Integer::sum);
+        }
+
+        if ("Aventure".equals(p.getExperience())) {
+            scores.merge("aventure", 3, Integer::sum);
+            scores.merge("nature", 1, Integer::sum);
+        } else if ("Relaxation".equals(p.getExperience())) {
+            scores.merge("detente", 3, Integer::sum);
+            scores.merge("luxe", 1, Integer::sum);
+        } else if ("Culture".equals(p.getExperience())) {
+            scores.merge("culture", 3, Integer::sum);
+        }
+
+        if ("Luxe".equals(p.getConfort())) {
+            scores.merge("luxe", 2, Integer::sum);
+        } else if ("Simple".equals(p.getConfort())) {
+            scores.merge("nature", 2, Integer::sum);
+            scores.merge("aventure", 1, Integer::sum);
+        }
+
+        return scores.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("culture");
+    }
+
+    private int calculerScore(Voyage v, ProfilForm p, String themeDominant) {
+
+        int score = 0;
+
+        if (v.getThemePrincipal() != null &&
+                v.getThemePrincipal().toLowerCase().contains(themeDominant)) {
+            score += 40;
+        }
+
+        if (v.getTheme() != null &&
+                v.getTheme().toLowerCase().contains(themeDominant)) {
+            score += 20;
+        }
+
+        if (v.getCategorie() != null && p.getExperience() != null) {
+            String cat = v.getCategorie().toLowerCase();
+            String exp = p.getExperience().toLowerCase();
+            if (cat.contains(exp) || exp.contains(cat)) {
+                score += 20;
             }
         }
 
-        System.out.println("Preferences :");
-        preferences.forEach((t, p) ->
-                System.out.println(" - " + t + " : " + p + "%"));
-        System.out.println();
+        if (v.getBudgetMoyen() != null) {
+            int bm = v.getBudgetMoyen();
+            String b = p.getBudget();
 
-        // Calcul de la somme des pourcentages
-        int somme = 0;
-        for (int pourcentage : preferences.values()) {
-            somme += pourcentage;
+            if ("Petit".equals(b) && bm <= 500) score += 20;
+            if ("Moyen".equals(b) && bm > 500 && bm <= 1500) score += 20;
+            if ("Gros".equals(b) && bm > 1500) score += 20;
         }
 
-        System.out.println("Somme des pourcentages = " + somme);
-
-        if (somme == 0) {
-            System.out.println("Somme nulle");
-            return List.of();
-        }
-
-        //calcule des proportions (devise sur la somme)
-        Map<String, Double> proportions = new LinkedHashMap<>();
-
-        for (String theme : preferences.keySet()) {
-            int pourcentage = preferences.get(theme);
-            double proportion = (double) pourcentage / somme;
-            proportions.put(theme, proportion);
-        }
-
-        System.out.println("\nProportions :");
-        proportions.forEach((t, p) ->
-                System.out.printf(" - %s : %.3f%n", t, p));
-
-        Map<String, Integer> quotas = new LinkedHashMap<>();
-        Map<String, Double> restes = new LinkedHashMap<>();
-
-        int attribue = 0;
-
-        // calcul des parts entières
-        System.out.println("\nQuotas théoriques :");
-        for (String theme : proportions.keySet()) {
-            double theorique = proportions.get(theme) * TOTAL_RECO;
-            int entier = (int) theorique;
-
-            quotas.put(theme, entier);
-            restes.put(theme, theorique - entier);
-            attribue += entier;
-
-            System.out.printf(
-                    " - %s : %.2f -> %d (reste %.2f)%n",
-                    theme, theorique, entier, theorique - entier
-            );
-        }
-
-        System.out.println("Attribués après partie entière : " + attribue);
-
-        //mntn on passe aux restes
-        while (attribue < TOTAL_RECO) {
-
-            String meilleurTheme = null;
-            double plusGrandReste = -1;
-
-            // On cherche le thème avec le plus grand reste
-            for (String theme : restes.keySet()) {
-                if (restes.get(theme) > plusGrandReste) {
-                    plusGrandReste = restes.get(theme);
-                    meilleurTheme = theme;
-                }
-            }
-
-            // on lui donne un voyage en plus
-            quotas.put(meilleurTheme, quotas.get(meilleurTheme) + 1);
-            restes.put(meilleurTheme, 0.0);
-
-            attribue++;
-
-            System.out.println("+1 pour " + meilleurTheme);
-        }
-
-        System.out.println("\nQuotas finaux :");
-        quotas.forEach((t, q) ->
-                System.out.println(" - " + t + " : " + q));
-
-        //Récupération de tous les voyages
-        List<Voyage> tousLesVoyages = voyageService.getVoyages();
-
-        //Regroupement des voyages par thème
-        Map<String, List<Voyage>> parTheme = new LinkedHashMap<>();
-
-        for (Voyage v : tousLesVoyages) {
-
-            if (v.getTheme() == null) {
-                continue;
-            }
-
-            String theme = v.getTheme().toLowerCase().trim();
-
-            if (!parTheme.containsKey(theme)) {
-                parTheme.put(theme, new ArrayList<>());
-            }
-
-            parTheme.get(theme).add(v);
-        }
-
-        System.out.println("\nVoyages disponibles par thème :");
-        parTheme.forEach((t, l) ->
-                System.out.println(" - " + t + " : " + l.size()));
-
-        //Sélection des voyages selon les quotas
-        List<Voyage> resultat = new ArrayList<>();
-        int manque = 0;
-
-        System.out.println("\nSélection finale :");
-        for (String theme : quotas.keySet()) {
-
-            List<Voyage> dispo = parTheme.get(theme);
-
-            if (dispo == null) {
-                System.out.println("Aucun voyage pour " + theme);
-                manque += quotas.get(theme);
-                continue;
-            }
-
-            int pris = Math.min(quotas.get(theme), dispo.size());
-
-            for (int i = 0; i < pris; i++) {
-                resultat.add(dispo.get(i));
-                System.out.println(" + " + dispo.get(i).getNom());
-            }
-
-            manque += quotas.get(theme) - pris;
-        }
-
-        if (resultat.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        System.out.println("\nVoyages manquants : " + manque);
-        System.out.println("TOTAL RECOMMANDÉ : " + resultat.size());
-        System.out.println("==============================\n");
-
-        return resultat;
+        return score;
     }
 }

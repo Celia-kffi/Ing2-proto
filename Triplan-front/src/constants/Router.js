@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Empreintetrajet from './Empreintetrajet';
+import Empreintetrajet from '../components/Empreintetrajet';
 
 
 export default function Router() {

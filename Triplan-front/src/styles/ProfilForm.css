@@ -1,0 +1,408 @@
+.form-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px 24px 60px;
+    color: #000;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.form-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.form-header p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.progress-bar-wrap {
+    background: #ddd;
+    border-radius: 10px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: #1e8fa0;
+    border-radius: 10px;
+    transition: width 0.3s;
+}
+
+.progress-label {
+    font-size: 12px;
+    color: #888;
+}
+
+.question-block {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.question-block h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.q-num {
+    background: #1e8fa0;
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.options-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.option-card {
+    flex: 1;
+    min-width: 100px;
+    background: #eee;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 14px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.option-card:hover {
+    background: #e0e0e0;
+    border-color: #aaa;
+}
+
+.option-card.selected {
+    background: #d0eef3;
+    border-color: #1e8fa0;
+}
+
+.option-card input[type="radio"] {
+    display: none;
+}
+
+.opt-label {
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+    gap: 12px;
+}
+
+.btn-retour {
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    color: #000;
+    border-radius: 20px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-retour:hover {
+    background: #d0d0d0;
+}
+
+.btn-valider {
+    background: #1e8fa0;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-valider:hover:not(:disabled) {
+    background: #1a7a8c;
+}
+
+.btn-valider:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.reco-section {
+    margin-top: 40px;
+}
+
+.reco-titre {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.reco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.reco-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.reco-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.reco-card.selected {
+    border-color: #1e8fa0;
+}
+
+.reco-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #1e8fa0;
+    color: #fff;
+    border-radius: 15px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.reco-theme-tag {
+    display: inline-block;
+    background: #e0f2f5;
+    color: #1e8fa0;
+    border-radius: 15px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.reco-nom {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.reco-pays {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.reco-prix {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e8fa0;
+}
+
+.reco-erreur {
+    margin-top: 20px;
+    background: #ffe0e0;
+    border: 1px solid #ffaaaa;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    color: #cc0000;
+}
+
+.reco-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.btn-hebergements {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-hebergements:hover {
+    background: #2563eb;
+}
+
+.btn-activites {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-activites:hover {
+    background: #7c3aed;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-content h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #eee;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-close:hover {
+    background: #ddd;
+}
+
+.loading-text,
+.no-results {
+    text-align: center;
+    color: #666;
+    padding: 40px 0;
+}
+
+.hebergements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.hebergement-card {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #ddd;
+}
+
+.hebergement-card:hover {
+    border-color: #3b82f6;
+}
+
+.hebergement-type {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #3b82f6;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.hebergement-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 15px;
+}
+
+.hebergement-etoiles {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+.hebergement-lieu {
+    color: #666;
+    font-size: 13px;
+    margin: 0 0 8px 0;
+}
+
+.hebergement-prix {
+    font-weight: 600;
+    color: #059669;
+    font-size: 16px;
+}
+
+.hebergement-confort {
+    display: inline-block;
+    margin-top: 8px;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+@media (max-width: 480px) {
+    .options-row {
+        flex-direction: column;
+    }
+    .option-card {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+}

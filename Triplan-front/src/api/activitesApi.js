@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../constants/config';
 
-const api = {
+const activitesApi = {
     getAllActivites: async () => {
         try {
             const response = await axios.get(`${API_BASE_URL}/activites`);
@@ -27,4 +27,4 @@ const api = {
     }
 };
 
-export default api;
+export default activitesApi;
