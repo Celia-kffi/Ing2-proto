@@ -40,7 +40,16 @@ const activitesApi = {
             console.error('Erreur lors du calcul de l\'itinéraire multi-jours:', error);
             throw error;
         }
-    }
+    },
+    getDerniereVilleRecommandee: async (clientId) => {
+        const response = await axios.get(`${API_BASE_URL}/recommandations/derniere-ville/${clientId}`);
+        return response.data;
+    },
+
+    getActivitesByVille: async (ville) => {
+        const response = await axios.get(`${API_BASE_URL}/activites/ville/${ville}`);
+        return response.data;
+    },
 };
 
 export default activitesApi;

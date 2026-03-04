@@ -19,15 +19,18 @@ function OptimalItinerary() {
     const [error, setError] = useState(null);
     const [isMultiDay, setIsMultiDay] = useState(false);
     const [nbJours, setNbJours] = useState(2);
+    const [villeRecommandee, setVilleRecommandee] = useState(null);
 
     useEffect(() => {
-        loadActivites();
+        loadVilleEtActivites();
     }, []);
 
-    const loadActivites = async () => {
+    const loadVilleEtActivites = async () => {
         try {
             setLoading(true);
-            const data = await activitesApi.getAllActivites();
+            const ville = await activitesApi.getDerniereVilleRecommandee(1);
+            setVilleRecommandee(ville);
+            const data = await activitesApi.getActivitesByVille(ville);
             setActivites(data);
             setError(null);
         } catch (err) {
@@ -37,7 +40,6 @@ function OptimalItinerary() {
             setLoading(false);
         }
     };
-
     const handleToggleActivite = (id) => {
         if (selectedActivites.includes(id)) {
             setSelectedActivites(selectedActivites.filter(actId => actId !== id));
@@ -102,6 +104,14 @@ function OptimalItinerary() {
             <header className="header">
                 <h1>Planifiez vos Activites</h1>
                 <p>Organisez votre itineraire de maniere optimale</p>
+                {villeRecommandee && (
+                    <div className="ville-recommandee-banner">
+                        <div>
+                            <p className="ville-label">Ville recommandée</p>
+                            <h2 className="ville-nom">{villeRecommandee}</h2>
+                        </div>
+                    </div>
+                )}
             </header>
 
             {error && <div className="error-banner">{error}</div>}

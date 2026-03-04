@@ -7,8 +7,10 @@ import triplan.back.dto.ItineraryResponse;
 import triplan.back.dto.MultiDayItineraryRequest;
 import triplan.back.dto.MultiDayItineraryResponse;
 import triplan.back.entities.Activite;
+import triplan.back.entities.Recommandation;
 import triplan.back.repositories.ActiviteRepository;
 import triplan.back.services.ItineraryService;
+import triplan.back.repositories.RecommandationRepository;
 
 import java.util.List;
 
@@ -19,11 +21,15 @@ public class ItineraryController {
 
     private ItineraryService itineraryService;
     private ActiviteRepository activiteRepository;
+    private RecommandationRepository recommandationRepository;
 
     public ItineraryController(ItineraryService itineraryService,
-                               ActiviteRepository activiteRepository) {
+                               ActiviteRepository activiteRepository,
+                               RecommandationRepository recommandationRepository
+                               ) {
         this.itineraryService = itineraryService;
         this.activiteRepository = activiteRepository;
+        this.recommandationRepository = recommandationRepository;
     }
 
     @GetMapping("/activites")
@@ -58,6 +64,20 @@ public class ItineraryController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+    @GetMapping("/recommandations/derniere-ville/{clientId}")
+    public ResponseEntity<String> getDerniereVilleRecommandee(@PathVariable Long clientId) {
+        Recommandation reco = recommandationRepository
+                .findTopByClientIdOrderByDateGenerationDesc(clientId)
+                .orElseThrow(() -> new RuntimeException("Aucune recommandation trouvée"));
+
+        String ville = reco.getVoyage().getDestination();
+        return ResponseEntity.ok(ville);
+    }
+
+    @GetMapping("/activites/ville/{ville}")
+    public ResponseEntity<List<Activite>> getActivitesByVille(@PathVariable String ville) {
+        return ResponseEntity.ok(activiteRepository.findByVille(ville));
     }
 
 }
