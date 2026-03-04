@@ -1,78 +1,273 @@
 import { useState } from "react";
+import "../styles/ProfilForm.css";
 
-function ProfilForm({ profilId, onClose }) {
+const API_BASE_URL = "http://localhost:8081";
 
-    const [scores, setScores] = useState({
-        nature: 0,
-        aventure: 0,
-        culture: 0,
-        detente: 0,
-        luxe: 0
-    });
+function ProfilForm({ onRetour }) {
 
-    function addPoints(theme, points) {
-        const newScores = { ...scores };
-        newScores[theme] = newScores[theme] + points;
-        setScores(newScores);
-    }
+    const [environnement, setEnvironnement] = useState("");
+    const [activite, setActivite] = useState("");
+    const [budget, setBudget] = useState("");
+    const [duree, setDuree] = useState("");
+    const [experience, setExperience] = useState("");
+    const [saison, setSaison] = useState("");
+    const [compagnie, setCompagnie] = useState("");
+    const [confort, setConfort] = useState("");
 
-    function handleSubmit(e) {
+    const [voyages, setVoyages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [erreur, setErreur] = useState(null);
+    const [voyageSelectionne, setVoyageSelectionne] = useState(null);
+
+    const [hebergements, setHebergements] = useState([]);
+    const [hebergementsVoyage, setHebergementsVoyage] = useState(null);
+    const [loadingHebergements, setLoadingHebergements] = useState(false);
+
+    async function handleSubmit(e) {
         e.preventDefault();
+        setLoading(true);
+        setErreur(null);
 
-        let total = 0;
-        for (let key in scores) {
-            total += scores[key];
-        }
+        const profilData = {
+            environnement,
+            activite,
+            budget,
+            duree,
+            experience,
+            saison,
+            compagnie,
+            confort
+        };
 
-        const percentages = {};
+        try {
+            const response = await fetch(API_BASE_URL + "/api/recommandations", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(profilData)
+            });
 
-        for (let key in scores) {
-            if (total !== 0) {
-                percentages[key] = Math.round((scores[key] / total) * 100);
-            } else {
-                percentages[key] = 0;
+            if (!response.ok) {
+                throw new Error("Erreur " + response.status);
             }
+
+            const data = await response.json();
+            setVoyages(data);
+        } catch (err) {
+            setErreur("Erreur lors de la recuperation des recommandations.");
+        } finally {
+            setLoading(false);
         }
-
-        console.log("Profil choisi :", profilId);
-        console.log("Scores :", scores);
-        console.log("Pourcentages :", percentages);
-
-        onClose();
     }
+
+    function selectionnerVoyage(voyage) {
+        setVoyageSelectionne(voyage);
+        fetch(API_BASE_URL + "/api/recommandations/selectionner", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ voyageId: voyage.id })
+        });
+    }
+
+    async function voirHebergements(voyage) {
+        setHebergementsVoyage(voyage);
+        setLoadingHebergements(true);
+        setHebergements([]);
+
+        try {
+            const ville = voyage.destination || voyage.ville || voyage.pays;
+            const response = await fetch(API_BASE_URL + "/api/hebergements?ville=" + encodeURIComponent(ville));
+
+            if (response.ok) {
+                const data = await response.json();
+                setHebergements(data);
+            }
+        } catch (err) {
+            console.error("Erreur hebergements", err);
+        } finally {
+            setLoadingHebergements(false);
+        }
+    }
+
+
+    const fields = [environnement, activite, budget, duree, experience, saison, compagnie, confort];
+    const filled = fields.filter(f => f !== "").length;
+    const progress = Math.round((filled / fields.length) * 100);
 
     return (
-        <div style={{ padding: "30px" }}>
+        <div className="form-wrapper">
 
-            <h2>Questionnaire Profil {profilId}</h2>
+            <div className="form-header">
+                <h2>Profil du voyageur</h2>
+                <p>Repondez aux questions pour obtenir une recommandation personnalisee</p>
 
-            <form onSubmit={handleSubmit}>
+                <div className="progress-bar-wrap">
+                    <div className="progress-bar-fill" style={{ width: progress + "%" }} />
+                </div>
+                <span className="progress-label">{filled} / {fields.length} reponses</span>
+            </div>
 
-                <h4>1. Environnement préféré</h4>
-                <button type="button" onClick={() => addPoints("nature", 2)}>Montagne</button>
-                <button type="button" onClick={() => addPoints("detente", 2)}>Mer</button>
-                <button type="button" onClick={() => addPoints("culture", 2)}>Ville</button>
+            <form onSubmit={handleSubmit} className="profil-form">
 
-                <h4>2. Activité favorite</h4>
-                <button type="button" onClick={() => addPoints("aventure", 3)}>Sports</button>
-                <button type="button" onClick={() => addPoints("culture", 3)}>Musées</button>
-                <button type="button" onClick={() => addPoints("detente", 3)}>Spa</button>
+                <Question number="1" title="Environnement prefere"
+                          value={environnement} setValue={setEnvironnement}
+                          options={[
+                              { value: "Montagne" },
+                              { value: "Mer" },
+                              { value: "Ville" }
+                          ]} />
 
-                <h4>3. Budget</h4>
-                <button type="button" onClick={() => addPoints("nature", 1)}>Petit budget</button>
-                <button type="button" onClick={() => addPoints("luxe", 3)}>Gros budget</button>
+                <Question number="2" title="Activite favorite"
+                          value={activite} setValue={setActivite}
+                          options={[
+                              { value: "Sports" },
+                              { value: "Musees" },
+                              { value: "Spa" }
+                          ]} />
 
-                <br /><br />
+                <Question number="3" title="Budget"
+                          value={budget} setValue={setBudget}
+                          options={[
+                              { value: "Petit", label: "Petit budget" },
+                              { value: "Moyen", label: "Budget moyen" },
+                              { value: "Gros", label: "Gros budget" }
+                          ]} />
 
-                <button type="submit">
-                    Valider
-                </button>
+                <Question number="4" title="Duree du voyage"
+                          value={duree} setValue={setDuree}
+                          options={[
+                              { value: "Weekend", label: "Week-end" },
+                              { value: "Semaine", label: "1 semaine" },
+                              { value: "Long", label: "2 semaines ou +" }
+                          ]} />
 
-                <button type="button" onClick={onClose} style={{ marginLeft: "10px" }}>
-                    Retour
-                </button>
+                <Question number="5" title="Type d'experience"
+                          value={experience} setValue={setExperience}
+                          options={[
+                              { value: "Aventure" },
+                              { value: "Relaxation" },
+                              { value: "Culture" }
+                          ]} />
+
+                <Question number="6" title="Saison preferee"
+                          value={saison} setValue={setSaison}
+                          options={[
+                              { value: "Ete", label: "Ete" },
+                              { value: "Hiver" },
+                              { value: "Printemps", label: "Printemps / Automne" }
+                          ]} />
+
+                <Question number="7" title="Vous voyagez"
+                          value={compagnie} setValue={setCompagnie}
+                          options={[
+                              { value: "Seul", label: "Seul(e)" },
+                              { value: "Couple", label: "En couple" },
+                              { value: "Famille", label: "En famille / amis" }
+                          ]} />
+
+                <Question number="8" title="Niveau de confort"
+                          value={confort} setValue={setConfort}
+                          options={[
+                              { value: "Simple" },
+                              { value: "Confort" },
+                              { value: "Luxe" }
+                          ]} />
+
+                <div className="form-actions">
+                    <button type="button" className="btn-retour" onClick={onRetour}>
+                        Retour
+                    </button>
+                    <button type="submit" className="btn-valider" disabled={filled < fields.length || loading}>
+                        {loading ? "Chargement..." : "Valider"}
+                    </button>
+                </div>
 
             </form>
+
+            {erreur && <p className="reco-erreur">{erreur}</p>}
+
+            {voyages.length > 0 && (
+                <div className="reco-section">
+                    <h2 className="reco-titre">Voyages recommandes</h2>
+
+                    <div className="reco-grid">
+                        {voyages.map((voyage) => (
+                            <div key={voyage.id}
+                                 className={"reco-card " + (voyageSelectionne?.id === voyage.id ? "selected" : "")}
+                                 onClick={() => selectionnerVoyage(voyage)}>
+
+                                {voyageSelectionne?.id === voyage.id &&
+                                    <div className="reco-badge">Selectionne</div>}
+
+                                <div className="reco-theme-tag">{voyage.theme}</div>
+                                <h3 className="reco-nom">{voyage.nom}</h3>
+                                <p className="reco-pays">{voyage.pays}</p>
+
+                                {voyage.prix && <div className="reco-prix">{voyage.prix} euros / pers.</div>}
+
+                                <div className="reco-actions">
+                                    <button type="button" className="btn-hebergements"
+                                            onClick={(e) => { e.stopPropagation(); voirHebergements(voyage); }}>
+                                        Hebergements
+                                    </button>
+                                    <button type="button" className="btn-activites"
+                                            onClick={(e) => {
+                                                //faire un lien vers la page de planification d'activitées
+                                            }}>
+                                        Autre action
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {hebergementsVoyage && (
+                <div className="modal-overlay" onClick={() => setHebergementsVoyage(null)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close" onClick={() => setHebergementsVoyage(null)}>X</button>
+
+                        <h2>Hebergements a {hebergementsVoyage.destination || hebergementsVoyage.ville}</h2>
+
+                        {loadingHebergements && <p className="loading-text">Chargement...</p>}
+
+                        {!loadingHebergements && hebergements.length === 0 && (
+                            <p className="no-results">Aucun hebergement trouve.</p>
+                        )}
+
+                        <div className="hebergements-grid">
+                            {hebergements.map((h) => (
+                                <div key={h.id} className="hebergement-card">
+                                    <div className="hebergement-type">{h.type}</div>
+                                    <h3>{h.nom}</h3>
+                                    {h.nbEtoiles && <div className="hebergement-etoiles">{h.nbEtoiles} etoiles</div>}
+                                    <p className="hebergement-lieu">{h.ville || h.destination}, {h.pays}</p>
+                                    <div className="hebergement-prix">{h.prixNuit} {h.devise} / nuit</div>
+                                    {h.niveauConfort && <span className="hebergement-confort">{h.niveauConfort}</span>}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+        </div>
+    );
+}
+
+function Question({ number, title, value, setValue, options }) {
+    return (
+        <div className="question-block">
+            <h3><span className="q-num">{number}</span> {title}</h3>
+            <div className="options-row">
+                {options.map(opt => (
+                    <label key={opt.value} className={"option-card " + (value === opt.value ? "selected" : "")}>
+                        <input type="radio" value={opt.value} checked={value === opt.value}
+                               onChange={(e) => setValue(e.target.value)} />
+                        <span className="opt-label">{opt.label || opt.value}</span>
+                    </label>
+                ))}
+            </div>
         </div>
     );
 }
