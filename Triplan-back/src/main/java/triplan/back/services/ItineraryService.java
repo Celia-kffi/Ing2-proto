@@ -196,11 +196,10 @@ public class ItineraryService {
 
         List<Activite> itineraireOptimal = calculerItinerairePlusProche(activites, depart);
 
-        // On répartit les activités sur plusieurs jours en respectant la durée max par jour
+        // On répartit les activités sur plusieurs jours
         List<JourItineraire> jours = repartirParJours(
                 itineraireOptimal,
-                request.getNbJours(),
-                request.getDureeMaxParJourMinutes()
+                request.getNbJours()
         );
 
         // On calcul les totaux distance et durée pour tout le séjour
@@ -222,9 +221,18 @@ public class ItineraryService {
 
     private List<JourItineraire> repartirParJours(
             List<Activite> itineraireOptimal,
-            int nbJours,
-            int dureeMaxParJour
+            int nbJours
     ) {
+        // Calcul de la durée totale de toutes les activités
+        int dureeTotale = 0;
+        for (Activite a : itineraireOptimal) {
+            dureeTotale += a.getDureeVisiteMinutes();
+        }
+
+        // Durée qu'on vise par jour et minimum d'activités par jour
+        int dureeCibleParJour = dureeTotale / nbJours;
+        int activitesMinParJour = itineraireOptimal.size() / nbJours;
+
         List<JourItineraire> jours = new ArrayList<>();
         List<ActiviteEtape> activitesJourActuel = new ArrayList<>();
 
@@ -236,8 +244,7 @@ public class ItineraryService {
         for (int i = 0; i < itineraireOptimal.size(); i++) {
             Activite activite = itineraireOptimal.get(i);
 
-
-            int dureeActivite = activite.getDureeVisiteMinutes();
+            // Calcul du trajet depuis l'activité précédente
             int tempsTrajet = 0;
             double distanceTrajet = 0.0;
 
@@ -247,29 +254,7 @@ public class ItineraryService {
                 tempsTrajet = (int) Math.ceil(distanceTrajet * 12);
             }
 
-            int nouvelleDuree = dureeCumuleeJour + dureeActivite + tempsTrajet;
-
-            // On vérifie si la durée max par jour est dépassée et si on peut créer un nouveau jour
-            if (nouvelleDuree > dureeMaxParJour && numeroJour < nbJours && !activitesJourActuel.isEmpty()) {
-                // On garde le jour courant
-                jours.add(new JourItineraire(
-                        numeroJour,
-                        new ArrayList<>(activitesJourActuel),
-                        dureeCumuleeJour,
-                        Math.round(distanceCumuleeJour * 100.0) / 100.0
-                ));
-
-                // On passe au jour suivant
-                numeroJour++;
-                activitesJourActuel.clear();
-                dureeCumuleeJour = 0;
-                distanceCumuleeJour = 0.0;
-
-                tempsTrajet = 0;
-                distanceTrajet = 0.0;
-            }
-
-
+            // On ajoute l'activité au jour courant
             ActiviteEtape etape = new ActiviteEtape(
                     ordreGlobal++,
                     activite.getId(),
@@ -283,11 +268,30 @@ public class ItineraryService {
             );
 
             activitesJourActuel.add(etape);
-            dureeCumuleeJour += dureeActivite + tempsTrajet;
+            dureeCumuleeJour += activite.getDureeVisiteMinutes() + tempsTrajet;
             distanceCumuleeJour += distanceTrajet;
+
+            // On vérifie si on peut passer au jour suivant
+            boolean cibleDureeAtteinte = dureeCumuleeJour >= dureeCibleParJour;
+            boolean minimumActivitesAtteint = activitesJourActuel.size() >= activitesMinParJour;
+            boolean resteDesJours = numeroJour < nbJours;
+
+            if (cibleDureeAtteinte && minimumActivitesAtteint && resteDesJours) {
+                // On sauvegarde le jour et on repart à zéro
+                jours.add(new JourItineraire(
+                        numeroJour,
+                        new ArrayList<>(activitesJourActuel),
+                        dureeCumuleeJour,
+                        Math.round(distanceCumuleeJour * 100.0) / 100.0
+                ));
+                numeroJour++;
+                activitesJourActuel.clear();
+                dureeCumuleeJour = 0;
+                distanceCumuleeJour = 0.0;
+            }
         }
 
-        // Ajout du dernier jour s'il reste des activités
+        // On ajoute le dernier jour avec les activités restantes
         if (!activitesJourActuel.isEmpty()) {
             jours.add(new JourItineraire(
                     numeroJour,

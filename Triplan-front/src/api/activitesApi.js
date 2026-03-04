@@ -27,13 +27,12 @@ const activitesApi = {
         }
     },
 
-    calculateMultiDayItinerary: async (activiteIds, pointDepartId = null, nbJours = 1, dureeMaxParJour = 480) => {
+    calculateMultiDayItinerary: async (activiteIds, pointDepartId = null, nbJours = 1) => {
         try {
             const requestBody = {
                 activiteIds: activiteIds,
                 pointDepartId: pointDepartId,
-                nbJours: nbJours,
-                dureeMaxParJourMinutes: dureeMaxParJour
+                nbJours: nbJours
             };
             const response = await axios.post(`${API_BASE_URL}/calculate-multi-days`, requestBody);
             return response.data;
