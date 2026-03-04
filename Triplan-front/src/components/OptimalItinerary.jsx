@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/OptimalItinerary.css';
-import api from '../services/api';
+import activitesApi from '../api/activitesApi';
 import ActivitesList from './ActivitesList';
 import ItineraryResult from './ItineraryResult';
 import { MESSAGES } from '../constants/config';
@@ -22,7 +22,7 @@ function OptimalItinerary() {
     const loadActivites = async () => {
         try {
             setLoading(true);
-            const data = await api.getAllActivites();
+            const data = await activitesApi.getAllActivites();
             setActivites(data);
             setError(null);
         } catch (err) {
@@ -50,7 +50,7 @@ function OptimalItinerary() {
             setLoading(true);
             setError(null);
             const pointDepart = selectedPointDepart || selectedActivites[0];
-            const data = await api.calculateItinerary(selectedActivites, pointDepart);
+            const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
             setItineraryData(data);
         } catch (err) {
             setError(MESSAGES.ERROR_CALCULATING);
