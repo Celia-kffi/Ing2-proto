@@ -28,7 +28,9 @@ function OptimalItinerary() {
     const loadVilleEtActivites = async () => {
         try {
             setLoading(true);
-            const data = await activitesApi.getAllActivites();
+            const ville = await activitesApi.getDerniereVilleRecommandee(1);
+            setVilleRecommandee(ville);
+            const data = await activitesApi.getActivitesByVille(ville);
             setActivites(data);
             setError(null);
         } catch (err) {
@@ -169,7 +171,7 @@ function OptimalItinerary() {
                         </button>
                         <button
                             className="btn-carbone"
-                            onClick={() => navigate('/carbon?distance=${distanceTotale}')}
+                            onClick={() => navigate(`/carbon?distance=${distanceTotale}`)}
                             disabled={!distanceTotale}
                         >
                              Calculer l'empreinte carbone
