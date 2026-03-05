@@ -73,6 +73,22 @@
     background: #0056b3;
 }
 
+.btn-retour-reco {
+    background: none;
+    border: none;
+    color: #1e8fa0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.btn-retour-reco:hover {
+    text-decoration: underline;
+}
+
 
 h3 {
     text-align: center;
@@ -104,3 +120,4 @@ canvas {
     0%, 100% { fill: red; }
     50% { fill: #ff8c8c; }
 }
+

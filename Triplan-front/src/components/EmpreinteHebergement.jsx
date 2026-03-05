@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Stage, Layer, Rect, Circle, Text } from "react-konva";
 import { SAISONS, TYPES_HEBERGEMENT, API_URL } from "../constants/hebergements";
 import "../styles/EmpreinteHebergement.css";
+import { useNavigate } from "react-router-dom";
 
 function EmpreinteHebergement({ hebergement }) {
 
@@ -37,6 +38,7 @@ function EmpreinteHebergement({ hebergement }) {
     const [resultat, setResultat] = useState(null);
     const [erreur, setErreur] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -84,6 +86,10 @@ function EmpreinteHebergement({ hebergement }) {
 
             <h2>Calcul Empreinte Hébergement</h2>
 
+            <button  className="btn-retour-reco"
+                     onClick={() => navigate(-1)}>
+                Retour aux recommandations
+            </button>
             <form onSubmit={handleSubmit} className="hebergement-form">
 
                 <input

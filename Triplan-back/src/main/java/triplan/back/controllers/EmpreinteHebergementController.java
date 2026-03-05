@@ -8,7 +8,7 @@ import triplan.back.services.EmpreinteHebergementService;
 
 @RestController
 @RequestMapping("/api/empreinte")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class EmpreinteHebergementController {
 
     private final EmpreinteHebergementService service;
