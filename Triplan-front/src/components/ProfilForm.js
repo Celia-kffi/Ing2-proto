@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/ProfilForm.css";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://172.31.253.128:8081";
 
 function ProfilForm({ onRetour }) {
 
