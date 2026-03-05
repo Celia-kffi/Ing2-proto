@@ -9,9 +9,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class ItineraryResponse {
-    private List<ActiviteEtape> itineraire;
+public class MultiDayItineraryResponse {
+    private int nbJours;
+    private List<JourItineraire> jours;
     private double distanceTotaleKm;
     private int dureeTotaleMinutes;
 }

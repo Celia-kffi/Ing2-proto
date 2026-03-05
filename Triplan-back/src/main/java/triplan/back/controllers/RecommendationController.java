@@ -64,7 +64,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommandations")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;

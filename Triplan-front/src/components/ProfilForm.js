@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../styles/ProfilForm.css";
 import { useNavigate } from "react-router-dom";
-const API_BASE_URL = "http://localhost:8081";
+
+const API_BASE_URL = "http://172.31.253.128:8081";
 
 function ProfilForm({ onRetour }) {
     const navigate = useNavigate();
@@ -22,6 +23,8 @@ function ProfilForm({ onRetour }) {
     const [hebergements, setHebergements] = useState([]);
     const [hebergementsVoyage, setHebergementsVoyage] = useState(null);
     const [loadingHebergements, setLoadingHebergements] = useState(false);
+
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -209,11 +212,15 @@ function ProfilForm({ onRetour }) {
                                             onClick={(e) => { e.stopPropagation(); voirHebergements(voyage); }}>
                                         Hebergements
                                     </button>
-                                    <button type="button" className="btn-activites"
-                                            onClick={(e) => {
-                                                //faire un lien vers la page de planification d'activitées
-                                            }}>
-                                        Autre action
+                                    <button
+                                        type="button"
+                                        className="btn-activites"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            const ville = voyage.destination || voyage.ville || voyage.pays;
+                                            navigate(`/itinerary?ville=${ville}`);
+                                        }}>
+                                        Planifier les activités
                                     </button>
                                 </div>
                             </div>
