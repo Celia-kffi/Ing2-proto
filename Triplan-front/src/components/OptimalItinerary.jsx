@@ -64,8 +64,18 @@ function OptimalItinerary() {
             setLoading(true);
             setError(null);
             const pointDepart = selectedPointDepart || selectedActivites[0];
-            const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
-            setItineraryData(data);
+
+            if (isMultiDay) {
+                const data = await activitesApi.calculateMultiDayItinerary(
+                    selectedActivites, pointDepart, nbJours
+                );
+                setMultiDayData(data);
+                setItineraryData(null);
+            } else {
+                const data = await activitesApi.calculateItinerary(selectedActivites, pointDepart);
+                setItineraryData(data);
+                setMultiDayData(null);
+            }
         } catch (err) {
             setError(MESSAGES.ERROR_CALCULATING);
             console.error(err);
