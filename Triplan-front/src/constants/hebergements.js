@@ -10,4 +10,4 @@ export const TYPES_HEBERGEMENT = [
     { value: "APPART", label: "Appartement" }
 ];
 
-export const API_URL = "http://localhost:8081/api/empreinte/calcul";
+export const API_URL = "http://172.31.253.128:8081/api/empreinte/calcul";
