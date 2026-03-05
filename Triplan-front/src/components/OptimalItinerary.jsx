@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/OptimalItinerary.css';
 import activitesApi from '../api/activitesApi';
 import ActivitesList from './ActivitesList';
@@ -7,6 +6,7 @@ import ItineraryResult from './ItineraryResult';
 import MultiDayItineraryResult from './MultiDayItineraryResult';
 import MapView from "./MapView";
 import { MESSAGES } from '../constants/config';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function OptimalItinerary() {
     const navigate = useNavigate();
@@ -20,6 +20,7 @@ function OptimalItinerary() {
     const [isMultiDay, setIsMultiDay] = useState(false);
     const [nbJours, setNbJours] = useState(2);
     const [villeRecommandee, setVilleRecommandee] = useState(null);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         loadVilleEtActivites();
@@ -28,10 +29,17 @@ function OptimalItinerary() {
     const loadVilleEtActivites = async () => {
         try {
             setLoading(true);
-            const ville = await activitesApi.getDerniereVilleRecommandee(1);
-            setVilleRecommandee(ville);
-            const data = await activitesApi.getActivitesByVille(ville);
-            setActivites(data);
+
+            const ville = searchParams.get('ville');
+
+            if (ville) {
+                setVilleRecommandee(ville);
+                const data = await activitesApi.getActivitesByVille(ville);
+                setActivites(data);
+            } else {
+                const data = await activitesApi.getAllActivites();
+                setActivites(data);
+            }
             setError(null);
         } catch (err) {
             setError(MESSAGES.ERROR_LOADING);
