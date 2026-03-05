@@ -24,7 +24,7 @@ function ProfilForm({ onRetour }) {
     const [hebergementsVoyage, setHebergementsVoyage] = useState(null);
     const [loadingHebergements, setLoadingHebergements] = useState(false);
 
-    const navigate = useNavigate();
+    
 
     async function handleSubmit(e) {
         e.preventDefault();
