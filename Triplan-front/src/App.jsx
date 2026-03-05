@@ -6,7 +6,8 @@ import OptimalItinerary from "./components/OptimalItinerary";
 import Recommendation from "./components/Recommendation";
 import Empreintetrajet from "./components/Empreintetrajet";
 import ProfilForm from "./components/ProfilForm";
-
+import EmpreinteHebergement from "./components/EmpreinteHebergement";
+import CalculHebergement from "./components/CalculHebergement";
 function App() {
     return (
         <Router>
@@ -24,7 +25,8 @@ function App() {
                 {/* Autres pages */}
                 <Route path="/itinerary" element={<OptimalItinerary />} />
                 <Route path="/carbon" element={<Empreintetrajet />} />
-
+                <Route path="/hebergement" element={<EmpreinteHebergement />} />
+                <Route path="/calcul-hebergement" element={<CalculHebergement />} />
             </Routes>
         </Router>
     );

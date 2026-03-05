@@ -1,0 +1,38 @@
+.hebergement-container {
+    padding: 20px;
+}
+
+.hebergement-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.hebergement-form input,
+.hebergement-form select {
+    padding: 6px;
+    font-size: 14px;
+}
+
+.hebergement-form button {
+    padding: 8px 15px;
+    background-color: #2c7be5;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.hebergement-form button:hover {
+    background-color: #1a5ed8;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error {
+    color: red;
+}

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "../styles/ProfilForm.css";
+import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://172.31.253.128:8081";
 
 function ProfilForm({ onRetour }) {
-
+    const navigate = useNavigate();
     const [environnement, setEnvironnement] = useState("");
     const [activite, setActivite] = useState("");
     const [budget, setBudget] = useState("");
@@ -22,6 +23,8 @@ function ProfilForm({ onRetour }) {
     const [hebergements, setHebergements] = useState([]);
     const [hebergementsVoyage, setHebergementsVoyage] = useState(null);
     const [loadingHebergements, setLoadingHebergements] = useState(false);
+
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -209,11 +212,15 @@ function ProfilForm({ onRetour }) {
                                             onClick={(e) => { e.stopPropagation(); voirHebergements(voyage); }}>
                                         Hebergements
                                     </button>
-                                    <button type="button" className="btn-activites"
-                                            onClick={(e) => {
-                                                //faire un lien vers la page de planification d'activitées
-                                            }}>
-                                        Autre action
+                                    <button
+                                        type="button"
+                                        className="btn-activites"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            const ville = voyage.destination || voyage.ville || voyage.pays;
+                                            navigate(`/itinerary?ville=${ville}`);
+                                        }}>
+                                        Planifier les activités
                                     </button>
                                 </div>
                             </div>
@@ -237,7 +244,11 @@ function ProfilForm({ onRetour }) {
 
                         <div className="hebergements-grid">
                             {hebergements.map((h) => (
-                                <div key={h.id} className="hebergement-card">
+                                <div
+                                    key={h.id}
+                                    className="hebergement-card"
+                                    onClick={() => navigate("/calcul-hebergement", { state: { hebergement: h } })}
+                                >
                                     <div className="hebergement-type">{h.type}</div>
                                     <h3>{h.nom}</h3>
                                     {h.nbEtoiles && <div className="hebergement-etoiles">{h.nbEtoiles} etoiles</div>}
