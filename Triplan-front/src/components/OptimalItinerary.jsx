@@ -30,8 +30,17 @@ function OptimalItinerary() {
     const loadVilleEtActivites = async () => {
         try {
             setLoading(true);
-            const data = await activitesApi.getAllActivites();
-            setActivites(data);
+
+            const ville = searchParams.get('ville');
+
+            if (ville) {
+                setVilleRecommandee(ville);
+                const data = await activitesApi.getActivitesByVille(ville);
+                setActivites(data);
+            } else {
+                const data = await activitesApi.getAllActivites();
+                setActivites(data);
+            }
             setError(null);
         } catch (err) {
             setError(MESSAGES.ERROR_LOADING);
