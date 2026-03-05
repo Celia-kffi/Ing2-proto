@@ -202,7 +202,7 @@ function ProfilForm({ onRetour }) {
                                     <div className="reco-badge">Selectionne</div>}
 
                                 <div className="reco-theme-tag">{voyage.theme}</div>
-                                <h3 className="reco-nom">{voyage.ville}</h3>
+                                <h3 className="reco-nom">{voyage.destination}</h3>
                                 <p className="reco-pays">{voyage.pays}</p>
 
                                 {voyage.prix && <div className="reco-prix">{voyage.prix} euros / pers.</div>}
@@ -246,7 +246,7 @@ function ProfilForm({ onRetour }) {
                             {hebergements.map((h) => (
                                 <div key={h.id} className="hebergement-card">
                                     <div className="hebergement-type">{h.type}</div>
-                                    <h3>{h.nom}</h3>
+                                    <h3>{h.destination}</h3>
                                     {h.nbEtoiles && <div className="hebergement-etoiles">{h.nbEtoiles} etoiles</div>}
                                     <p className="hebergement-lieu">{h.ville || h.destination}, {h.pays}</p>
                                     <div className="hebergement-prix">{h.prixNuit} {h.devise} / nuit</div>
