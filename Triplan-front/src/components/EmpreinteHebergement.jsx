@@ -11,8 +11,28 @@ function EmpreinteHebergement({ hebergement }) {
         saison: "HIVER",
         chauffage: false,
         superficie: 50,
-        type: hebergement?.type === "Appartement" ? "APPART" : "HOTEL"
+        type: hebergement?.type?.toUpperCase() || "HOTEL"
     });
+    const getHebergementWidth = () => {
+        switch(formData.type) {
+            case "HOTEL":
+                return 400;
+            case "VILLA":
+                return 350;
+            case "CHALET":
+                return 320;
+            case "CAMPING":
+                return 200;
+            case "CABANE":
+                return 180;
+            case "AUBERGE":
+                return 250;
+            case "ECO_LODGE":
+                return 260;
+            default:
+                return 300;
+        }
+    };
 
     const [resultat, setResultat] = useState(null);
     const [erreur, setErreur] = useState(null);
@@ -147,7 +167,7 @@ function EmpreinteHebergement({ hebergement }) {
                     <Rect
                         x={50}
                         y={50}
-                        width={formData.type === "HOTEL" ? 400 : 300}
+                        width={getHebergementWidth()}
                         height={formData.superficie * 4}
                         fill="#e0e0e0"
                         stroke="black"
