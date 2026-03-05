@@ -24,6 +24,7 @@ function OptimalItinerary() {
 
     useEffect(() => {
         loadVilleEtActivites();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadVilleEtActivites = async () => {
