@@ -37,5 +37,8 @@ public class Activite {
 
     @Column(nullable = false, length = 100)
     private String ville;
-
+    public Long getId() { return id; }
+    public String getNom() { return nom; }
+    public int getDureeVisiteMinutes() { return dureeVisiteMinutes; }
+    public String getTypeActivite() { return typeActivite; }
 }
