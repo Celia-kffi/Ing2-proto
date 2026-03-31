@@ -193,7 +193,20 @@ function OptimalItinerary() {
                             onClick={() => navigate(`/carbon?distance=${distanceTotale}`)}
                             disabled={!distanceTotale}
                         >
-                             Calculer l'empreinte carbone
+                            Calculer l'empreinte carbone
+                        </button>
+                        <button
+                            className="btn-cout"
+                            onClick={() => navigate('/cout-voyage', {
+                                state: {
+                                    ville: villeRecommandee,
+                                    nbJours: nbJours,
+                                    activitesSelectionnees: activites.filter(a => selectedActivites.includes(a.id)),
+                                }
+                            })}
+                            disabled={selectedActivites.length === 0}
+                        >
+                             Voir le coût estimé
                         </button>
                     </div>
                 </div>
