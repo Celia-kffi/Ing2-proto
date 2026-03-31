@@ -50,6 +50,15 @@ const activitesApi = {
         const response = await axios.get(`${API_BASE_URL}/activites/ville/${ville}`);
         return response.data;
     },
+    getHebergementsByVille: async (ville) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/hebergements?ville=${ville}`);
+            return response.data;
+        } catch (error) {
+            console.error('Erreur getHebergementsByVille:', error);
+            throw error;
+        }
+    },
 };
 
 export default activitesApi;
