@@ -38,4 +38,6 @@ public class Activite {
     @Column(nullable = false, length = 100)
     private String ville;
 
+    @Column(name = "prix")
+    private Double prix;
 }
