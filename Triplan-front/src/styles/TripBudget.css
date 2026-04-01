@@ -35,10 +35,20 @@
 
 .cout-ligne {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     padding: 6px 0;
     border-bottom: 1px solid #eee;
     font-size: 14px;
+}
+
+.cout-ligne span:first-child {
+    flex: 1;
+}
+
+.cout-ligne span:nth-child(2) {
+    width: 70px;
+    text-align: right;
+    margin-right: 10px;
 }
 
 .cout-sous-total {
@@ -177,6 +187,7 @@
     font-weight: bold;
     margin-top: 8px;
 }
+
 .btn-cout {
     flex: 1;
     padding: 12px;
@@ -191,10 +202,36 @@
 }
 
 .btn-cout:hover:not(:disabled) {
-    background: #ce5353;
+    background: #b03a3a;
 }
 
 .btn-cout:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+.btn-supprimer-activite {
+    background: none;
+    border: none;
+    color: #b8b0b0;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-supprimer-activite:hover {
+    background: #d5c2c6;
+}
+
+@media (max-width: 768px) {
+    .cout-container {
+        flex-direction: column;
+    }
+
+    .cout-card {
+        width: 100%;
+        min-width: 100%;
+    }
 }

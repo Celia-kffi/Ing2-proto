@@ -8,6 +8,7 @@ function TripBudget() {
     const location = useLocation();
 
     const { ville, nbJours, activitesSelectionnees } = location.state || {};
+    const [activitesLocales, setActivitesLocales] = useState(activitesSelectionnees || []);
 
     const [hebergements, setHebergements] = useState([]);
     const [hebergementChoisi, setHebergementChoisi] = useState(null);
@@ -33,10 +34,12 @@ function TripBudget() {
         }
     };
 
+    const handleSupprimer = (id) => {
+        setActivitesLocales(prev => prev.filter(a => a.id !== id));
+    };
+
     // Calcul coût activités
-    const coutActivites = activitesSelectionnees
-        ? activitesSelectionnees.reduce((total, a) => total + (a.prix || 0), 0)
-        : 0;
+    const coutActivites = activitesLocales.reduce((total, a) => total + (a.prix || 0), 0);
 
     // Calcul coût hébergement
     const coutHebergement = hebergementChoisi
@@ -49,6 +52,7 @@ function TripBudget() {
     // Comparaison budget
     const budgetNum = parseFloat(budget) || 0;
     const reste = budgetNum - coutTotal;
+
 
     return (
         <div className="cout-voyage">
@@ -65,13 +69,21 @@ function TripBudget() {
                 <div className="cout-card">
                     <h2> Activités</h2>
                     <div className="cout-liste">
-                        {activitesSelectionnees && activitesSelectionnees.map(a => (
+                        {activitesLocales.map(a => (
                             <div key={a.id} className="cout-ligne">
                                 <span>{a.nom}</span>
                                 <span>{a.prix ? `${a.prix} €` : 'Gratuit'}</span>
+                                <button
+                                    className="btn-supprimer-activite"
+                                    onClick={() => handleSupprimer(a.id)}
+                                    title="Retirer cette activité"
+                                >
+                                    ✕
+                                </button>
                             </div>
                         ))}
                     </div>
+
                     <div className="cout-sous-total">
                         <strong>Sous-total : {coutActivites} €</strong>
                     </div>
