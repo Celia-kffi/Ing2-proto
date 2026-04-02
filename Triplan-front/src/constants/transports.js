@@ -13,5 +13,5 @@ export const MODES = [
     { name: "Voiture essence", img: voiture },
     { name: "Voiture électrique", img: voitureElec },
     { name: "Bus urbain", img: bus },
-    { name: "Avion court courrier", img: avion },
+
 ];

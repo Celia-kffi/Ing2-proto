@@ -1,30 +1,34 @@
-
-import { useState } from "react";
-
+import { useState } from "react"
+import { useLocation , useNavigate} from "react-router-dom";
 function EmpreinteActiviteDetail() {
-    const [id, setId] = useState("");
+    const location = useLocation();
+    const activites = location.state?.activites || [];
+    const selectedIds = activites.map(a => a.id);
     const [nbPersonnes, setNbPersonnes] = useState(1);
     const [resultat, setResultat] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [details, setDetails] = useState(null);
+    const [details, setDetails] = useState([]);
 
     const calculerEmpreinte = async () => {
-        if (!id) return;
+        if (selectedIds.length === 0) return;
 
         setLoading(true);
-        setDetails(null);
+        setDetails([]);
         setResultat(null);
 
         try {
             const response = await fetch(
-                `http://localhost:8081/activites/${id}/empreinte?nbPersonnes=${nbPersonnes}`
+                `http://localhost:8081/activites/empreinte?ids=${selectedIds.join(",")}&nbPersonnes=${nbPersonnes}`
     );
 
-if (!response.ok) throw new Error("Erreur API");
+if (!response.ok) throw new Error("Erreur API" );
 
 const data = await response.json();
-setDetails(data);
-setResultat(data.empreinte);
+console.log("Réponse API :", data);
+const liste = data.activites;
+setDetails(liste);
+const total = liste.reduce((sum, act) => sum + (act.empreinte || 0), 0);
+setResultat(total.toFixed(2));
 
 } catch (error) {
     setResultat("Erreur lors du calcul");
@@ -44,20 +48,26 @@ return (
     }}>
         <h2>Empreinte Carbone - Activité</h2>
 
+        <h3>Activités sélectionnées :</h3>
+        {activites.length === 0 ? (
+            <p>Aucune activité reçue</p>
+        ) : (
+            <ul>
+                {activites.map((act) => (
+                    <li key={act.id}>
+                        {act.nom} (ID: {act.id})
+                    </li>
+                ))}
+            </ul>
+        )}
         <div style={{ marginBottom: "15px" }}>
-            <input
-                type="number"
-                placeholder="ID activité"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-                style={{ width: "120px", marginRight: "10px" }}
-            />
+
 
             <input
                 type="number"
                 min="1"
                 value={nbPersonnes}
-                onChange={(e) => setNbPersonnes(e.target.value)}
+                onChange={(e) => setNbPersonnes(Number(e.target.value))}
                 style={{ width: "80px", marginRight: "10px" }}
             />
 
@@ -68,42 +78,56 @@ return (
 
         {loading && <p>Calcul en cours...</p>}
 
-        {details && (
-            <div style={{
-                marginTop: "20px",
-                background: "#fff",
-                padding: "15px",
-                borderRadius: "8px",
-                border: "1px solid #ccc"
-            }}>
-                <h3>Détails du calcul</h3>
+        {details.length > 0 && (
+            <div style={{ marginTop: "20px" }}>
+                {details.map((act, index) => (
+                    <div key={index} style={{
+                        background: "#fff",
+                        padding: "15px",
+                        borderRadius: "8px",
+                        border: "1px solid #ccc",
+                        marginBottom: "15px"
+                    }}>
+                        <h3>Détails de {act.nom}</h3>
 
-                <p><strong>Nom :</strong> {details.nom}</p>
-                <p><strong>Type :</strong> {details.type}</p>
-                <p><strong>Ville :</strong> {details.ville}</p>
+                        <p><strong>Type :</strong> {act.type}</p>
+                        <p><strong>Ville :</strong> {act.ville}</p>
 
-                {details.dureeHeures && (
-                    <p><strong>Durée :</strong> {details.dureeHeures} heures</p>
-                )}
+                        {act.dureeHeures && (
+                            <p><strong>Durée :</strong> {act.dureeHeures} heures</p>
+                        )}
 
-                <p>
-                    <strong>Facteur d’émission :</strong> {details.facteur} kgCO2 / {details.unite}
-                </p>
+                        <p>
+                            <strong>Facteur :</strong> {act.facteur} kgCO2 / {act.unite}
+                        </p>
 
-                <hr />
+                        <hr />
 
-                <p style={{ fontWeight: "bold", fontSize: "18px" }}>
-                    Empreinte finale : {details.empreinte} kgCO2
-                </p>
+                        <p style={{ fontWeight: "bold" }}>
+                            Empreinte : {act.empreinte} kgCO2
+                        </p>
+                    </div>
+                ))}
+
+                <div style={{
+                    background: "#e8f5e9",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    border: "1px solid #a5d6a7",
+                    textAlign: "center"
+                }}>
+                    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        Total : {resultat} kgCO2
+                    </p>
+                </div>
             </div>
-        )}
-
-        {resultat && !details && (
-            <p>
-                Empreinte carbone : <strong>{resultat} kgCO2</strong>
-            </p>
-        )}
-    </div>
+            )}
+            {resultat &&  details.length === 0 && (
+                <p>
+                    Empreinte carbone : <strong>{resultat} kgCO2</strong>
+                </p>
+            )}
+        </div>
 );
 }
 

@@ -6,7 +6,9 @@ import triplan.back.entities.Activite;
 import triplan.back.entities.FacteurActivite;
 import triplan.back.repositories.FacteurActiviteRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,7 +38,8 @@ public class ActiviteService {
             details.put("dureeHeures", dureeHeures);
 
         } else if (facteur.getUnite().equalsIgnoreCase("personne")) {
-            valeur = nbPersonnes * facteur.getFacteurEmission();
+            double empreinteParPersonne = facteur.getFacteurEmission();
+            valeur = empreinteParPersonne * nbPersonnes;
 
         } else {
             valeur = facteur.getFacteurEmission();
@@ -52,5 +55,12 @@ public class ActiviteService {
         details.put("empreinte", valeur);
 
         return details;
+    }
+    public List<Map<String, Object>> calculEmpreinteListe(List<Activite> activites, int nbPersonnes) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Activite a : activites) {
+            result.add(calculEmpreinteAvecDetails(a, nbPersonnes));
+        }
+        return result;
     }
 }
