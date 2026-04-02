@@ -1,38 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import activitesApi from '../api/activitesApi';
 import '../styles/TripBudget.css';
 
 function TripBudget() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { ville, nbJours, activitesSelectionnees, distanceTotale } = location.state || {};
+    const { ville, nbJours, activitesSelectionnees, distanceTotale, hebergementChoisi } = location.state || {};
     const [activitesLocales, setActivitesLocales] = useState(activitesSelectionnees || []);
-
-    const [hebergements, setHebergements] = useState([]);
-    const [hebergementChoisi, setHebergementChoisi] = useState(null);
     const [budget, setBudget] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (ville) {
-            chargerHebergements();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const chargerHebergements = async () => {
-        try {
-            setLoading(true);
-            const data = await activitesApi.getHebergementsByVille(ville);
-            setHebergements(data);
-        } catch (err) {
-            console.error('Erreur chargement hébergements:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleSupprimer = (id) => {
         setActivitesLocales(prev => prev.filter(a => a.id !== id));
@@ -64,9 +40,8 @@ function TripBudget() {
 
             <div className="cout-container">
 
-
                 <div className="cout-card">
-                    <h2> Activités</h2>
+                    <h2>Activités</h2>
                     <div className="cout-liste">
                         {activitesLocales.map(a => (
                             <div key={a.id} className="cout-ligne">
@@ -82,49 +57,27 @@ function TripBudget() {
                             </div>
                         ))}
                     </div>
-
                     <div className="cout-sous-total">
                         <strong>Sous-total : {coutActivites} €</strong>
                     </div>
                 </div>
 
                 <div className="cout-card">
-                    <h2> Hébergement</h2>
-                    {loading ? (
-                        <p>Chargement...</p>
-                    ) : (
-                        <select
-                            className="hebergement-select"
-                            value={hebergementChoisi?.id || ''}
-                            onChange={(e) => {
-                                const h = hebergements.find(h => h.id === parseInt(e.target.value));
-                                setHebergementChoisi(h || null);
-                            }}
-                        >
-                            <option value="">-- Choisir un hébergement --</option>
-                            {hebergements.map(h => (
-                                <option key={h.id} value={h.id}>
-                                    {h.nom} — {h.prixNuit} €/nuit
-                                </option>
-                            ))}
-                        </select>
-                    )}
-
-                    {hebergementChoisi && (
+                    <h2>Hébergement</h2>
+                    {hebergementChoisi ? (
                         <div className="hebergement-detail">
-                            <p>{hebergementChoisi.type} — {hebergementChoisi.nbEtoiles} </p>
-                            <p>{hebergementChoisi.prixNuit} € × {nbJours} nuits = <strong>{coutHebergement} €</strong>
-                            </p>
+                            <p><strong>{hebergementChoisi.nom}</strong></p>
+                            <p>{hebergementChoisi.prixNuit} € × {nbJours} nuits = <strong>{coutHebergement} €</strong></p>
                         </div>
+                    ) : (
+                        <p className="no-hebergement">Aucun hébergement choisi</p>
                     )}
-
                     <div className="cout-sous-total">
                         <strong>Sous-total : {coutHebergement} €</strong>
                     </div>
                 </div>
             </div>
 
-            {/* Répartition */}
             <div className="cout-repartition">
                 <h2>Répartition des coûts</h2>
                 <div className="repartition-lignes">
@@ -133,7 +86,7 @@ function TripBudget() {
                         <div className="barre-container">
                             <div
                                 className="barre activites"
-                                style={{width: coutTotal > 0 ? `${(coutActivites / coutTotal) * 100}%` : '0%'}}
+                                style={{ width: coutTotal > 0 ? `${(coutActivites / coutTotal) * 100}%` : '0%' }}
                             />
                         </div>
                         <span>{coutActivites} €</span>
@@ -143,7 +96,7 @@ function TripBudget() {
                         <div className="barre-container">
                             <div
                                 className="barre hebergement"
-                                style={{width: coutTotal > 0 ? `${(coutHebergement / coutTotal) * 100}%` : '0%'}}
+                                style={{ width: coutTotal > 0 ? `${(coutHebergement / coutTotal) * 100}%` : '0%' }}
                             />
                         </div>
                         <span>{coutHebergement} €</span>
@@ -153,7 +106,6 @@ function TripBudget() {
                     Total estimé : <strong>{coutTotal} €</strong>
                 </div>
             </div>
-
 
             <div className="cout-budget">
                 <h2>Comparer avec mon budget</h2>
@@ -179,9 +131,9 @@ function TripBudget() {
                             }
                         </p>
                     </div>
-
                 )}
             </div>
+
             <div className="carbon">
                 <button
                     className="btn-carbone"
@@ -193,7 +145,6 @@ function TripBudget() {
             </div>
         </div>
     );
-
 }
 
 export default TripBudget;

@@ -9,10 +9,8 @@ import triplan.back.dto.MultiDayItineraryResponse;
 import triplan.back.entities.Activite;
 import triplan.back.entities.Recommandation;
 import triplan.back.repositories.ActiviteRepository;
-import triplan.back.repositories.HebergementRepository;
 import triplan.back.services.ItineraryService;
 import triplan.back.repositories.RecommandationRepository;
-import triplan.back.entities.Hebergements;
 
 import java.util.List;
 
@@ -24,17 +22,14 @@ public class ItineraryController {
     private ItineraryService itineraryService;
     private ActiviteRepository activiteRepository;
     private RecommandationRepository recommandationRepository;
-    private HebergementRepository hebergementRepository;
 
     public ItineraryController(ItineraryService itineraryService,
                                ActiviteRepository activiteRepository,
-                               RecommandationRepository recommandationRepository,
-                               HebergementRepository hebergementRepository
+                               RecommandationRepository recommandationRepository
                                ) {
         this.itineraryService = itineraryService;
         this.activiteRepository = activiteRepository;
         this.recommandationRepository = recommandationRepository;
-        this.hebergementRepository = hebergementRepository;
     }
 
     @GetMapping("/activites")
@@ -84,10 +79,4 @@ public class ItineraryController {
     public ResponseEntity<List<Activite>> getActivitesByVille(@PathVariable String ville) {
         return ResponseEntity.ok(activiteRepository.findByVille(ville));
     }
-    @GetMapping("/hebergements")
-    public ResponseEntity<List<Hebergements>> getHebergementsByVille(@RequestParam String ville) {
-        List<Hebergements> hebergements = hebergementRepository.findByVilleIgnoreCaseOrDestinationIgnoreCase(ville, ville);
-        return ResponseEntity.ok(hebergements);
-    }
-
 }

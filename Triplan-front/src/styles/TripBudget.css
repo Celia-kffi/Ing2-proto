@@ -75,6 +75,11 @@
     font-size: 13px;
     margin-bottom: 10px;
 }
+.no-hebergement {
+    color: #999;
+    font-style: italic;
+    margin: 10px 0;
+}
 
 /* Répartition */
 .cout-repartition {
