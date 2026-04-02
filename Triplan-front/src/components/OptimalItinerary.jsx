@@ -19,8 +19,7 @@ function OptimalItinerary() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isMultiDay, setIsMultiDay] = useState(false);
-    const nbJoursUrl = parseInt(searchParams.get('nbJours')) || 2;
-    const [nbJours, setNbJours] = useState(nbJoursUrl);
+    const nbJours = parseInt(searchParams.get('nbJours')) || 2;
     const [villeRecommandee, setVilleRecommandee] = useState(null);
     const hebergementId = searchParams.get('hebergementId');
     const hebergementNom = searchParams.get('hebergementNom');
