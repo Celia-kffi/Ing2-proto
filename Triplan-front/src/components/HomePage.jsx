@@ -9,38 +9,33 @@ const HomePage = () => {
     const features = [
         {
             id: 'recommendations',
-            title: 'Recommandations de Voyages',
-            available: true,
-            route: '/recommendations'
+            title: 'Recommandations de voyages',
+            route: '/login'
         },
         {
             id: 'itinerary',
-            title: 'Planification d\'Activités',
-            available: true,
+            title: 'Planification d\'activités',
             route: '/itinerary'
         },
         {
             id: 'carbon',
-            title: 'Empreinte Carbone',
-            available: true,
+            title: 'Empreinte carbone',
             route: '/carbon'
         },
         {
             id: 'client',
-            title: 'client mock en masse',
-            available: true,
+            title: 'Client mock en masse',
             route: '/clients'
         },
         {
-            id: 'Hebergement',
-            title: 'carbone hebergement',
-            available: true,
+            id: 'hebergement',
+            title: 'Carbone hébergement',
             route: '/hebergement'
         }
     ];
 
-    const handleNavigation = (feature) => {
-        navigate(feature.route);
+    const handleNavigation = (route) => {
+        navigate(route);
     };
 
     return (
@@ -49,6 +44,7 @@ const HomePage = () => {
                 <img src={logo} alt="Triplan Logo" className="logo"/>
                 <h1 className="title">TRIPLAN</h1>
             </header>
+
             <main className="home-main">
                 <div className="welcome-section">
                     <h2>Bienvenue sur Triplan</h2>
@@ -60,7 +56,7 @@ const HomePage = () => {
                         <div
                             key={feature.id}
                             className="feature-card"
-                            onClick={() => handleNavigation(feature)}
+                            onClick={() => handleNavigation(feature.route)}
                         >
                             <h3>{feature.title}</h3>
                             <button className="feature-button">Commencer</button>
@@ -70,13 +66,16 @@ const HomePage = () => {
 
                 <div className="info-section">
                     <div className="info-card">
-                        <h4>Notre Mission</h4>
+                        <h4>Notre mission</h4>
                         <p>Rendre vos voyages plus efficaces et respectueux de l'environnement</p>
                     </div>
                     <div className="info-card">
                         <h4>Comment ça marche ?</h4>
-                        <p>1. Recevez des recommandations - 2. Planifiez votre itinéraire - 3. Consultez votre impact
-                            carbone</p>
+                        <p>
+                            1. Recevez des recommandations<br/>
+                            2. Planifiez votre itinéraire<br/>
+                            3. Consultez votre impact carbone
+                        </p>
                     </div>
                 </div>
             </main>

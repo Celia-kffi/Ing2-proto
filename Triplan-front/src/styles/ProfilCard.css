@@ -1,0 +1,109 @@
+.pc-page {
+    background: #f4f9fa;
+    font-family: sans-serif;
+    padding-bottom: 20px;
+}
+
+/* Carte principale */
+.pc-hero {
+    background: #1a7a8a;
+    padding: 20px;
+    color: white;
+}
+
+/* Header */
+.pc-hero-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.pc-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: white;
+    color: #1a7a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.pc-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.pc-email {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Badge */
+.pc-badge {
+    margin-left: auto;
+    background: white;
+    color: #1a7a8a;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+/* Stats */
+.pc-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.pc-stat {
+    text-align: center;
+    flex: 1;
+}
+
+.pc-stat-label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.pc-stat-val {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Boutons */
+.pc-action-strip {
+    background: white;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.pc-btn-main {
+    background: #1a7a8a;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pc-btn-main:hover {
+    background: #155d69;
+}
+
+.pc-btn-sec {
+    background: transparent;
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pc-btn-sec:hover {
+    border-color: red;
+    color: red;
+}
