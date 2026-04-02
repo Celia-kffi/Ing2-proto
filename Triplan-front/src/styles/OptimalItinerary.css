@@ -143,21 +143,6 @@ body {
 .btn-secondary:hover:not(:disabled) {
     background: #e0e0e0;
 }
-.btn-carbone {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: #2e7d32;
-    color: white;
-}
-.btn-carbone:hover {
-    background: #1b5e20;
-}
 
 @media (max-width: 768px) {
     .top-container {

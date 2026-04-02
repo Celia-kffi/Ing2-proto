@@ -188,13 +188,7 @@ function OptimalItinerary() {
                         >
                             Reinitialiser
                         </button>
-                        <button
-                            className="btn-carbone"
-                            onClick={() => navigate(`/carbon?distance=${distanceTotale}`)}
-                            disabled={!distanceTotale}
-                        >
-                            Calculer l'empreinte carbone
-                        </button>
+
                         <button
                             className="btn-cout"
                             onClick={() => navigate('/cout-voyage', {
@@ -202,6 +196,7 @@ function OptimalItinerary() {
                                     ville: villeRecommandee,
                                     nbJours: nbJours,
                                     activitesSelectionnees: activites.filter(a => selectedActivites.includes(a.id)),
+                                    distanceTotale: distanceTotale
                                 }
                             })}
                             disabled={selectedActivites.length === 0}

@@ -7,7 +7,7 @@ function TripBudget() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { ville, nbJours, activitesSelectionnees } = location.state || {};
+    const { ville, nbJours, activitesSelectionnees, distanceTotale } = location.state || {};
     const [activitesLocales, setActivitesLocales] = useState(activitesSelectionnees || []);
 
     const [hebergements, setHebergements] = useState([]);
@@ -52,7 +52,6 @@ function TripBudget() {
     // Comparaison budget
     const budgetNum = parseFloat(budget) || 0;
     const reste = budgetNum - coutTotal;
-
 
     return (
         <div className="cout-voyage">
@@ -114,7 +113,8 @@ function TripBudget() {
                     {hebergementChoisi && (
                         <div className="hebergement-detail">
                             <p>{hebergementChoisi.type} — {hebergementChoisi.nbEtoiles} </p>
-                            <p>{hebergementChoisi.prixNuit} € × {nbJours} nuits = <strong>{coutHebergement} €</strong></p>
+                            <p>{hebergementChoisi.prixNuit} € × {nbJours} nuits = <strong>{coutHebergement} €</strong>
+                            </p>
                         </div>
                     )}
 
@@ -133,7 +133,7 @@ function TripBudget() {
                         <div className="barre-container">
                             <div
                                 className="barre activites"
-                                style={{ width: coutTotal > 0 ? `${(coutActivites / coutTotal) * 100}%` : '0%' }}
+                                style={{width: coutTotal > 0 ? `${(coutActivites / coutTotal) * 100}%` : '0%'}}
                             />
                         </div>
                         <span>{coutActivites} €</span>
@@ -143,7 +143,7 @@ function TripBudget() {
                         <div className="barre-container">
                             <div
                                 className="barre hebergement"
-                                style={{ width: coutTotal > 0 ? `${(coutHebergement / coutTotal) * 100}%` : '0%' }}
+                                style={{width: coutTotal > 0 ? `${(coutHebergement / coutTotal) * 100}%` : '0%'}}
                             />
                         </div>
                         <span>{coutHebergement} €</span>
@@ -179,7 +179,17 @@ function TripBudget() {
                             }
                         </p>
                     </div>
+
                 )}
+            </div>
+            <div className="carbon">
+                <button
+                    className="btn-carbone"
+                    onClick={() => navigate(`/carbon?distance=${distanceTotale}`)}
+                    disabled={!distanceTotale}
+                >
+                     Calculer l'empreinte carbone de mon voyage
+                </button>
             </div>
         </div>
     );
