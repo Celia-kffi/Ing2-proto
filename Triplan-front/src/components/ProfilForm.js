@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/ProfilForm.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const API_BASE_URL = "http://172.31.253.128:8081";
+const API_BASE_URL = "http://localhost:8081";
 
 export default function ProfilForm({ onRetour }) {
     const navigate = useNavigate();
@@ -310,18 +310,35 @@ export default function ProfilForm({ onRetour }) {
 
                         <div className="hebergements-grid">
                             {hebergements.map((h) => (
-                                <div key={h.id}
-                                     className={"hebergement-card " + (hebergementChoisi?.id === h.id ? "selected" : "")}
-                                     onClick={() => setHebergementChoisi(
-                                         hebergementChoisi?.id === h.id ? null : h
-                                     )}>
+                                <div
+                                    key={h.id}
+                                    className={"hebergement-card " + (hebergementChoisi?.id === h.id ? "selected" : "")}
+                                    onClick={() => setHebergementChoisi(
+                                        hebergementChoisi?.id === h.id ? null : h
+                                    )}
+                                >
                                     <div className="hebergement-type">{h.type}</div>
+
                                     <h3>{h.nom || h.destination}</h3>
+
                                     {h.nbEtoiles && (
                                         <div className="hebergement-etoiles">{h.nbEtoiles} etoiles</div>
                                     )}
-                                    <p className="hebergement-lieu">{h.ville || h.destination}, {h.pays}</p>
-                                    <div className="hebergement-prix">{h.prixNuit} {h.devise} / nuit</div>
+
+                                    <p className="hebergement-lieu">
+                                        {h.ville || h.destination}, {h.pays}
+                                    </p>
+
+                                    {h.empreinteCarbone && (
+                                        <div className="hebergement-carbone">
+                                            {h.empreinteCarbone} kg CO₂ / nuit
+                                        </div>
+                                    )}
+
+                                    <div className="hebergement-prix">
+                                        {h.prixNuit} {h.devise} / nuit
+                                    </div>
+
                                     {h.niveauConfort && (
                                         <span className="hebergement-confort">{h.niveauConfort}</span>
                                     )}
