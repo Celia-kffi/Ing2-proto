@@ -21,6 +21,7 @@ export default function ProfilForm({ onRetour }) {
     // Synchronise l'URL a chaque changement de champ
     useEffect(() => {
         const params = {};
+
         if (dateDebut)     params.dateDebut     = dateDebut;
         if (dateFin)       params.dateFin       = dateFin;
         if (environnement) params.environnement = environnement;
@@ -28,9 +29,19 @@ export default function ProfilForm({ onRetour }) {
         if (budget)        params.budget        = budget;
         if (experience)    params.experience    = experience;
         if (compagnie)     params.compagnie     = compagnie;
-        setSearchParams(params, { replace: true });
-    }, [dateDebut, dateFin, environnement, activite, budget, experience, compagnie]);
 
+        setSearchParams(params, { replace: true });
+
+    }, [
+        dateDebut,
+        dateFin,
+        environnement,
+        activite,
+        budget,
+        experience,
+        compagnie,
+        setSearchParams
+    ]);
     // Resultats
     const [voyages,           setVoyages]           = useState([]);
     const [voyageSelectionne, setVoyageSelectionne] = useState(null);
@@ -46,8 +57,14 @@ export default function ProfilForm({ onRetour }) {
     // Charger profil depuis localStorage
     useEffect(() => {
         const stored = localStorage.getItem("user");
-        if (!stored) { navigate("/login"); return; }
+
+        if (!stored) {
+            navigate("/login");
+            return;
+        }
+
         setProfil(JSON.parse(stored));
+
     }, [navigate]);
 
     // Progress bar
