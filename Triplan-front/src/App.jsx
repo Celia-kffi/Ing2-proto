@@ -31,7 +31,7 @@ function App() {
                 <Route path="/carbon" element={<Empreintetrajet />} />
                 <Route path="/hebergement" element={<EmpreinteHebergement />} />
                 <Route path="/calcul-hebergement" element={<CalculHebergement />} />
-                <Route path="/cout-voyage" element={<TripBudget />} />
+
             </Routes>
         </Router>
     );
