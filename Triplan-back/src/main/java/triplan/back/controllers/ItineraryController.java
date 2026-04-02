@@ -79,5 +79,4 @@ public class ItineraryController {
     public ResponseEntity<List<Activite>> getActivitesByVille(@PathVariable String ville) {
         return ResponseEntity.ok(activiteRepository.findByVille(ville));
     }
-
 }
