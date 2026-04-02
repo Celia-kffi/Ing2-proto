@@ -8,19 +8,22 @@ import Empreintetrajet from "./components/Empreintetrajet";
 import ProfilForm from "./components/ProfilForm";
 import EmpreinteHebergement from "./components/EmpreinteHebergement";
 import CalculHebergement from "./components/CalculHebergement";
-import TripBudget from "./components/TripBudget";
+import Login from "./components/login";
+
 function App() {
     return (
         <Router>
             <Routes>
 
-                {/* Page d'accueil normale */}
+                {/* Page d'accueil */}
                 <Route path="/" element={<HomePage />} />
 
-                {/* Page recommandations normale */}
+                {/* le login */}
+                <Route path="/login" element={<Login />} />
+
                 <Route path="/recommendations" element={<Recommendation />} />
 
-                {/* Formulaire profil (nouvelle page) */}
+                {/* Formulaire profil */}
                 <Route path="/profil/:id/formulaire" element={<ProfilForm />} />
 
                 {/* Autres pages */}
