@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useLocation , useNavigate} from "react-router-dom";
+import { useLocation} from "react-router-dom";
 function EmpreinteActiviteDetail() {
     const location = useLocation();
     const activites = location.state?.activites || [];
