@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/activites")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ActiviteController {
 
     private final ActiviteService service;
