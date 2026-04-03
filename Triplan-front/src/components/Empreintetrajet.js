@@ -9,7 +9,7 @@ import { REMPLISSAGES } from "../constants/remplissages";
 export default function Empreintetrajet() {
     const navigate = useNavigate();
     const location = useLocation();
-    const activites = location.state?.activites || [];
+    const activites = location.state?.activitesSelectionnees || [];
     const [searchParams] = useSearchParams();
     const [distance, setDistance] = useState(0);
     const [selected, setSelected] = useState(null);
