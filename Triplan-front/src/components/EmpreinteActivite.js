@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useLocation , useNavigate} from "react-router-dom";
+import { useLocation} from "react-router-dom";
 function EmpreinteActiviteDetail() {
     const location = useLocation();
     const activites = location.state?.activites || [];
@@ -18,7 +18,7 @@ function EmpreinteActiviteDetail() {
 
         try {
             const response = await fetch(
-                `http://localhost:8081/activites/empreinte?ids=${selectedIds.join(",")}&nbPersonnes=${nbPersonnes}`
+                `http://172.31.253.128:8081/activites/empreinte?ids=${selectedIds.join(",")}&nbPersonnes=${nbPersonnes}`
     );
 
 if (!response.ok) throw new Error("Erreur API" );
