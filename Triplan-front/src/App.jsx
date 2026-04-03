@@ -9,18 +9,23 @@ import ProfilForm from "./components/ProfilForm";
 import EmpreinteHebergement from "./components/EmpreinteHebergement";
 import CalculHebergement from "./components/CalculHebergement";
 import EmpreinteActivite from "./components/EmpreinteActivite";
+import Login from "./components/login";
+import TripBudget from "./components/TripBudget";
+
 function App() {
     return (
         <Router>
             <Routes>
 
-                {/* Page d'accueil normale */}
+                {/* Page d'accueil */}
                 <Route path="/" element={<HomePage />} />
 
-                {/* Page recommandations normale */}
+                {/* le login */}
+                <Route path="/login" element={<Login />} />
+
                 <Route path="/recommendations" element={<Recommendation />} />
 
-                {/* Formulaire profil (nouvelle page) */}
+                {/* Formulaire profil */}
                 <Route path="/profil/:id/formulaire" element={<ProfilForm />} />
 
                 {/* Autres pages */}
@@ -29,6 +34,8 @@ function App() {
                 <Route path="/hebergement" element={<EmpreinteHebergement />} />
                 <Route path="/calcul-hebergement" element={<CalculHebergement />} />
                 <Route path="/activite-carbone" element={<EmpreinteActivite />} />
+                <Route path="/cout-voyage" element={<TripBudget />} />
+
             </Routes>
         </Router>
     );

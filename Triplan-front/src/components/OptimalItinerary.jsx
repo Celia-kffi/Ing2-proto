@@ -9,6 +9,7 @@ import { MESSAGES } from '../constants/config';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function OptimalItinerary() {
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [activites, setActivites] = useState([]);
     const [selectedActivites, setSelectedActivites] = useState([]);
@@ -18,9 +19,11 @@ function OptimalItinerary() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isMultiDay, setIsMultiDay] = useState(false);
-    const [nbJours, setNbJours] = useState(2);
+    const nbJours = parseInt(searchParams.get('nbJours')) || 2;
     const [villeRecommandee, setVilleRecommandee] = useState(null);
-    const [searchParams] = useSearchParams();
+    const hebergementId = searchParams.get('hebergementId');
+    const hebergementNom = searchParams.get('hebergementNom');
+    const hebergementPrix = parseFloat(searchParams.get('hebergementPrix')) || 0;
 
     useEffect(() => {
         loadVilleEtActivites();
@@ -157,20 +160,6 @@ function OptimalItinerary() {
                             />
                             Planning sur plusieurs jours
                         </label>
-
-                        {isMultiDay && (
-                            <div className="nb-jours-input">
-                                <label htmlFor="nb-jours">Duree du sejour (jours) :</label>
-                                <input
-                                    type="number"
-                                    id="nb-jours"
-                                    min="1"
-                                    max="7"
-                                    value={nbJours}
-                                    onChange={(e) => setNbJours(parseInt(e.target.value) || 1)}
-                                />
-                            </div>
-                        )}
                     </div>
 
                     <div className="action-buttons">
@@ -188,12 +177,24 @@ function OptimalItinerary() {
                         >
                             Reinitialiser
                         </button>
+
                         <button
-                            className="btn-carbone"
-                            onClick={() => navigate(`/carbon?distance=${distanceTotale}`)}
-                            disabled={!distanceTotale}
+                            className="btn-cout"
+                            onClick={() => navigate('/cout-voyage', {
+                                state: {
+                                    ville: villeRecommandee,
+                                    nbJours: nbJours,
+                                    activitesSelectionnees: activites.filter(a => selectedActivites.includes(a.id)),
+                                    distanceTotale: distanceTotale,
+                                    hebergementChoisi: hebergementId ? {
+                                        nom: hebergementNom,
+                                        prixNuit: hebergementPrix
+                                    } : null
+                                }
+                            })}
+                            disabled={selectedActivites.length === 0}
                         >
-                             Calculer l'empreinte carbone
+                             Voir le coût estimé
                         </button>
                     </div>
                 </div>

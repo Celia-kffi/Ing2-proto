@@ -36,4 +36,5 @@ public class HebergementController {
 
         return ResponseEntity.ok(hebergements);
     }
+
 }

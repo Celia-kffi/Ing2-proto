@@ -44,6 +44,9 @@ public class Hebergements {
     @Column(name = "equipements", columnDefinition = "text")
     private String equipements;
 
+    @Column(name = "empreinte_carbone" )
+    private Double empreinteCarbone;
+
     public Integer getId() {
         return id;
     }
@@ -139,4 +142,8 @@ public class Hebergements {
     public void setEquipements(String equipements) {
         this.equipements = equipements;
     }
+
+    public void setEmpreinteCarbone(Double empreinteCarbone) {}
+
+    public Double getEmpreinteCarbone() {return empreinteCarbone;}
 }
