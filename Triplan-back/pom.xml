@@ -88,4 +88,16 @@
         </plugins>
     </build>
 
+    <profiles>
+    <profile>
+        <id>integration</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <db.url>jdbc:postgresql://172.31.253.128:5432/triplan</db.url>
+        </properties>
+    </profile>
+    </profiles>
+
 </project>
