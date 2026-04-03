@@ -8,6 +8,7 @@ import Empreintetrajet from "./components/Empreintetrajet";
 import ProfilForm from "./components/ProfilForm";
 import EmpreinteHebergement from "./components/EmpreinteHebergement";
 import CalculHebergement from "./components/CalculHebergement";
+import EmpreinteActivite from "./components/EmpreinteActivite";
 import Login from "./components/login";
 import TripBudget from "./components/TripBudget";
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/carbon" element={<Empreintetrajet />} />
                 <Route path="/hebergement" element={<EmpreinteHebergement />} />
                 <Route path="/calcul-hebergement" element={<CalculHebergement />} />
+                <Route path="/activite-carbone" element={<EmpreinteActivite />} />
                 <Route path="/cout-voyage" element={<TripBudget />} />
 
             </Routes>

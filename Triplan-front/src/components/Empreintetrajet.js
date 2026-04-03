@@ -1,24 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Empreinte_trajet.css";
 import { MODES } from "../constants/transports";
 import { INFRASTRUCTURES } from "../constants/infrastructures";
 import { REMPLISSAGES } from "../constants/remplissages";
 
 
-
 export default function Empreintetrajet() {
-    const [distance, setDistance] = useState(10);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const activites = location.state?.activites || [];
+    const [searchParams] = useSearchParams();
+    const [distance, setDistance] = useState(0);
     const [selected, setSelected] = useState(null);
     const [infrastructure, setInfrastructure] = useState("autoroute");
     const [remplissage, setRemplissage] = useState("moyen");
     const [resultat, setResultat] = useState(null);
+
+    useEffect(() => {
+        const distanceFromUrl = searchParams.get("distance");
+
+        if (distanceFromUrl) {
+            const dist = Number(distanceFromUrl);
+            setDistance(dist);
+            if (dist <= 2) setSelected("Marche");
+            else if (dist <= 5) setSelected("Vélo");
+            else if (dist <= 10) setSelected("Métro");
+            else if (dist <= 15) setSelected("Bus urbain");
+            else if (dist <= 20) setSelected("Voiture électrique");
+            else if (dist <= 200) setSelected("Voiture essence");
+        } else {
+            setSelected("Voiture essence");
+        }
+    }, [searchParams]);
+    const isFromItinerary = searchParams.get("distance") !== null;
+
     const calculerEmpreinte = async () => {
         try {
             const payload = {
-                transport: selected,
                 distance: distance,
                 infrastructure: infrastructure,
                 remplissage: remplissage,
+                transport: selected
             };
 
             console.log("Données envoyées au backend :", payload);
@@ -35,12 +58,19 @@ export default function Empreintetrajet() {
             console.log("Résultat reçu :", data);
 
             setResultat(data);
+            setSelected(data.transport);
         } catch (error) {
             console.error("Erreur fetch :", error);
             alert("Erreur de communication avec le serveur");
         }
     };
-
+    const calculActivites = () => {
+        navigate("/activite-carbone", {
+            state: {
+                activites: activites
+            }
+        });
+    };
 
     return (
         <div className="co2-container">
@@ -52,6 +82,7 @@ export default function Empreintetrajet() {
                         type="number"
                         min="0"
                         value={distance}
+                        disabled={isFromItinerary}
                         onChange={(e) => setDistance(Number(e.target.value))}
                     />
                     <span>km</span>
@@ -66,7 +97,7 @@ export default function Empreintetrajet() {
                             className={`transport-btn ${
                                 selected === mode.name ? "active" : ""
                             }`}
-                            onClick={() => setSelected(mode.name)}
+                            onClick={() => setSelected(selected === mode.name ? null : mode.name)}
                         >
                             <img src={mode.img} alt={mode.name} />
                             <span>{mode.name}</span>
@@ -105,9 +136,16 @@ export default function Empreintetrajet() {
                 <button
                     className="calcul-btn"
                     onClick={calculerEmpreinte}
-                    disabled={!selected}
+                    disabled={distance <= 0}
                 >
                     Calculer l’empreinte
+                </button>
+                <button
+                    className="calcul-btn"
+                    onClick={calculActivites}
+                    disabled={activites.length === 0}
+                >
+                    Calculer empreinte des activités
                 </button>
 
                 {resultat && (
@@ -126,6 +164,16 @@ export default function Empreintetrajet() {
                         <p><strong>Différence :</strong> {resultat.difference.toFixed(2)} kg CO₂</p>
                     </div>
                 )}
+                <div style={{ marginTop: "20px" }}>
+                    <h4>Activités reçues :</h4>
+                    {activites.length === 0 ? (
+                        <p>Aucune activité</p>
+                    ) : (
+                        activites.map(a => (
+                            <p key={a.id}>{a.nom}</p>
+                        ))
+                    )}
+                </div>
             </div>
         </div>
     );

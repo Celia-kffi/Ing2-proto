@@ -1,7 +1,5 @@
 package triplan.back.services;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import triplan.back.entities.CoefficientInfrastructure;
 import triplan.back.entities.CoefficientRemplissage;
@@ -32,16 +30,36 @@ public class EmpreinteCarboneService {
         this.empreinteRepo = empreinteRepo;
     }
 
+    public MoyenTransport choisirTransport(double distance) {
+        String nom;
+
+        if (distance <= 2) nom = "Marche";
+        else if (distance <= 5) nom = "Vélo";
+        else if (distance <= 20) nom = "Voiture électrique";
+        else if (distance <= 200) nom = "Voiture essence";
+        else nom = "Avion";
+
+        return transportRepo.findByNom(nom)
+                .orElseThrow(() -> new RuntimeException("Transport non trouvé"));
+    }
 
     public Map<String, Object> calculEmpreinte(@RequestBody Map<String, Object> data) {
 
-        String transportN = data.get("transport").toString();
         double distance = Double.parseDouble(data.get("distance").toString());
         String infrastructure = data.get("infrastructure").toString();
         String remplissage = data.get("remplissage").toString();
 
-        MoyenTransport transport = transportRepo.findByNom(transportN)
-                .orElseThrow(() -> new RuntimeException("Transport inconnu"));
+        MoyenTransport transport;
+        String transportN;
+        if (data.get("transport") != null && !data.get("transport").toString().isEmpty()) {
+            transportN = data.get("transport").toString();
+            transport = transportRepo.findByNom(transportN)
+                    .orElseThrow(() -> new RuntimeException("Transport inconnu"));
+        } else {
+            transport = choisirTransport(distance);
+            transportN = transport.getNom();
+            System.out.println("Transport auto choisi : " + transportN);
+        }
 
         double facteurEmission = transport.getFacteurEmission();
 

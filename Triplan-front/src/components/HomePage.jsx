@@ -31,6 +31,12 @@ const HomePage = () => {
             id: 'hebergement',
             title: 'Carbone hébergement',
             route: '/hebergement'
+        },
+        {
+            id: 'activite',
+            title: 'Empreinte Activité',
+            available: true,
+            route: '/activite-carbone'
         }
     ];
 
