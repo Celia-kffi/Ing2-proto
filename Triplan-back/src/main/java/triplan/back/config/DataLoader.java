@@ -3,6 +3,7 @@ package triplan.back.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import triplan.back.entities.Profil;
 import triplan.back.entities.Voyage;
 import triplan.back.repositories.ProfilRepository;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+@Profile("!test")
 @Configuration
 public class DataLoader {
 
