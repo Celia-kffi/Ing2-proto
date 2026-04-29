@@ -135,7 +135,6 @@ function TripBudget() {
             </div>
 
             <div className="carbon">
-                <div className="carbon">
                     <button
                         className="btn-carbone"
                         onClick={() => navigate(`/carbon?distance=${distanceTotale}`, {
@@ -148,7 +147,6 @@ function TripBudget() {
                     >
                         Calculer l'empreinte carbone de mon voyage
                     </button>
-                </div>
             </div>
         </div>
     );
