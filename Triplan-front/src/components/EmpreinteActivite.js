@@ -18,7 +18,7 @@ function EmpreinteActiviteDetail() {
 
         try {
             const response = await fetch(
-                `http://172.31.253.128:8081/activites/empreinte?ids=${selectedIds.join(",")}&nbPersonnes=${nbPersonnes}`
+                `http://172.31.252.54:8081/activites/empreinte?ids=${selectedIds.join(",")}&nbPersonnes=${nbPersonnes}`
     );
 
 if (!response.ok) throw new Error("Erreur API" );

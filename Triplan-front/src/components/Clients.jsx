@@ -5,7 +5,7 @@ function Clients() {
     const [nombre, setNombre] = useState(5);
 
     const fetchClients = () => {
-        fetch(`http://localhost:8081/mock/clients/${nombre}`)
+        fetch(`http://172.31.252.54:8081/mock/clients/${nombre}`)
             .then(response => response.json())
             .then(data => setClients(data))
             .catch(error => console.error("Erreur :", error));

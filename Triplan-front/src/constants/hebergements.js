@@ -16,4 +16,4 @@ export const TYPES_HEBERGEMENT = [
     { value: "ECO_LODGE", label: "Eco Lodge" }
 ];
 
-export const API_URL = "http://172.31.253.128:8081/api/empreinte/calcul";
+export const API_URL = "http://172.31.252.54:8081/api/empreinte/calcul";

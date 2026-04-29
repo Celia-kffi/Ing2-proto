@@ -13,7 +13,7 @@ function Login() {
     function handleLogin(e) {
         e.preventDefault();
 
-        fetch("http://172.31.253.128:8081/api/login", {
+        fetch("http://172.31.252.54:8081/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

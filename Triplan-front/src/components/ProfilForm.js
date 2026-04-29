@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/ProfilForm.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const API_BASE_URL = "http://172.31.253.128:8081";
+const API_BASE_URL = "http://172.31.252.54:8081";
 
 export default function ProfilForm({ onRetour }) {
     const navigate = useNavigate();
