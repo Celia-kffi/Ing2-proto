@@ -16,8 +16,17 @@ Application déployée à l'adresse suivante : http://172.31.253.128/
 ## Fonctionnalités
 
 ### Recommandation de voyages — Célia KOUFFI
+**R2 — Recommandation des voyages**
 - Génération de recommandations de voyages en fonction du profil utilisateur
 - Visualisation des voyages recommandés via une interface dédiée
+- Affichage des détails de chaque voyage recommandé (Planification des activités, coût estimé, empreinte carbone)
+- Possibilité de sélectionner un voyage recommandé pour lui plannifier des activités et itinéraires
+
+**R3**
+- Raffinement des recommandations en fonction d'un formulaire de préférences (type de voyage, budget, durée, etc.)
+- création de environnements de produiton pour depolyer l'application
+- créations des profils maven pour les différentes parties de l'application (backend, frontend, etc.)
+- création d'un pipeline de CI/CD pour automatiser les tests et le déploiement de l'application
 
 ### Planification et itinéraires — Roumayssae EL KENZ
 
